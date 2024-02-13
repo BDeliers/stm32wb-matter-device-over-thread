@@ -19,6 +19,7 @@
 /*STM32 includes*/
 #include "app_common.h"
 #include "app_thread.h"
+#include "app_uart.h"
 #include "stm32_lpm.h"
 #include "dbg_trace.h"
 #include "cmsis_os.h"
@@ -60,7 +61,6 @@ chip::DeviceLayer::FactoryDataProvider mFactoryDataProvider;
 #define APP_EVENT_QUEUE_SIZE 10
 #define NVM_TIMEOUT 1000  // timer to handle PB to save data in nvm or do a factory reset
 #define DELAY_NVM 5000 // save data in nvm after commissioning with a delay of 5 sec
-#define STM32_LIGHT_ENDPOINT_ID 1
 
 static QueueHandle_t sAppEventQueue;
 TimerHandle_t sPushButtonTimeoutTimer;

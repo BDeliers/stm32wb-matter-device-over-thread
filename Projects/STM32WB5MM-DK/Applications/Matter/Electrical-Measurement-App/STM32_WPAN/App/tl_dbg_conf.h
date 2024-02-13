@@ -59,7 +59,7 @@
 #endif
 
 #if (TL_SHCI_CMD_DBG_RAW_EN != 0)
-#define TL_SHCI_CMD_DBG_RAW(_PDATA_, _SIZE_)  HW_UART_Transmit(hw_uart1, (uint8_t*)_PDATA_, _SIZE_, (~0))
+#define TL_SHCI_CMD_DBG_RAW(_PDATA_, _SIZE_)  AppUart_TransmitDebug((uint8_t*)_PDATA_, _SIZE_, (~0))
 #else
 #define TL_SHCI_CMD_DBG_RAW(...)
 #endif
@@ -73,7 +73,7 @@
 #endif
 
 #if (TL_SHCI_EVT_DBG_RAW_EN != 0)
-#define TL_SHCI_EVT_DBG_RAW(_PDATA_, _SIZE_)  HW_UART_Transmit(hw_uart1, (uint8_t*)_PDATA_, _SIZE_, (~0))
+#define TL_SHCI_EVT_DBG_RAW(_PDATA_, _SIZE_)  AppUart_TransmitDebug((uint8_t*)_PDATA_, _SIZE_, (~0))
 #else
 #define TL_SHCI_EVT_DBG_RAW(...)
 #endif
@@ -90,7 +90,7 @@
 #endif
 
 #if (TL_HCI_CMD_DBG_RAW_EN != 0)
-#define TL_HCI_CMD_DBG_RAW(_PDATA_, _SIZE_)  HW_UART_Transmit(hw_uart1, (uint8_t*)_PDATA_, _SIZE_, (~0))
+#define TL_HCI_CMD_DBG_RAW(_PDATA_, _SIZE_)  AppUart_TransmitDebug((uint8_t*)_PDATA_, _SIZE_, (~0))
 #else
 #define TL_HCI_CMD_DBG_RAW(...)
 #endif
@@ -104,7 +104,7 @@
 #endif
 
 #if (TL_HCI_EVT_DBG_RAW_EN != 0)
-#define TL_HCI_EVT_DBG_RAW(_PDATA_, _SIZE_)  HW_UART_Transmit(hw_uart1, (uint8_t*)_PDATA_, _SIZE_, (~0))
+#define TL_HCI_EVT_DBG_RAW(_PDATA_, _SIZE_)  AppUart_TransmitDebug((uint8_t*)_PDATA_, _SIZE_, (~0))
 #else
 #define TL_HCI_EVT_DBG_RAW(...)
 #endif

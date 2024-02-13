@@ -55,7 +55,6 @@ COAP,THREAD,BLE,Matter
   - Matter/Electrical-Measurement-App/Core/Src/app_entry.cpp              Initialization of the application
   - Matter/Electrical-Measurement-App/Core/Core/Src/stm32_lpm_if.c        Low Power Manager Interface
   - Matter/Electrical-Measurement-App/Core/Core/Src/hw_timerserver.c      Timer Server based on RTC
-  - Matter/Electrical-Measurement-App/Core/Core/Src/hw_uart.c             UART Driver
   - Matter/Electrical-Measurement-App/Core/Src/app_main.cpp               Main program
   - Matter/Electrical-Measurement-App/STM32_WPAN/App/p2p_server_app.c     BLE P2P Server application implementation
   - Matter/Electrical-Measurement-App/Core/Src/stm32wbxx_it.c             Interrupt handlers

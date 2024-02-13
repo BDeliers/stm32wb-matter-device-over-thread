@@ -266,8 +266,7 @@ void APP_THREAD_Init_UART_CLI(void) {
 #endif /* (CFG_FULL_LOW_POWER == 0) */
 
 #if (CFG_FULL_LOW_POWER == 0)
-	HW_UART_Init(CFG_CLI_UART);
-	HW_UART_Receive_IT(CFG_CLI_UART, aRxBuffer, 1, RxCpltCallback);
+	// CLI UART init was here
 #endif /* (CFG_FULL_LOW_POWER == 0) */
 }
 
@@ -352,8 +351,6 @@ void TL_THREAD_CliNotReceived(TL_EvtPacket_t *Notbuffer) {
 	/* WORKAROUND: if string to output is "> " then respond directly to M0 and do not output it */
 	if (strcmp((const char*) l_CliBuffer->cmdserial.cmd.payload, "> ") != 0) {
 		/* Write to CLI UART */
-		HW_UART_Transmit_IT(CFG_CLI_UART, l_CliBuffer->cmdserial.cmd.payload,
-				l_size, HostTxCb);
 	} else {
 		Send_CLI_Ack_For_OT();
 	}
@@ -590,7 +587,6 @@ static void RxCpltCallback(void) {
 	}
 
 	/* Once a character has been sent, put back the device in reception mode */
-	HW_UART_Receive_IT(CFG_CLI_UART, aRxBuffer, 1U, RxCpltCallback);
 }
 #endif /* (CFG_FULL_LOW_POWER == 0) */
 

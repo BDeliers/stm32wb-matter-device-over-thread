@@ -21,6 +21,7 @@
 #include "app_common.h"
 #include "main.h"
 #include "app_entry.h"
+#include "app_uart.h"
 #include "app_thread.h"
 #include "app_conf.h"
 #include "hw_conf.h"
@@ -117,6 +118,8 @@ static void ExtPA_Init( void );
 #endif
 static void ShciUserEvtProcess(void *argument);
 static void PushButtonEvtProcess(void *argument);
+
+static void clbk_external_uart(uint8_t);
 /* USER CODE END PFP */
 
 static void displayConcurrentMode(void);
@@ -177,6 +180,9 @@ void APPE_Init(void) {
     BSP_LCD_Refresh(0);
     UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Matter ElectricalMeasurementApp", CENTER_MODE);
     BSP_LCD_Refresh(0);
+
+    // Initialize external UART
+    AppUart_InitExternal(clbk_external_uart);
 
     /**
      * From now, the application is waiting for the ready event ( VS_HCI_C2_Ready )
@@ -525,9 +531,7 @@ void TL_TRACES_EvtReceived(TL_EvtPacket_t *hcievt) {
  */
 #if(CFG_DEBUG_TRACE != 0)
 void DbgOutputInit(void) {
-#if (CFG_HW_USART1_ENABLED == 1)
-    HW_UART_Init(CFG_DEBUG_TRACE_UART);
-#endif
+    AppUart_InitDebug();
     return;
 }
 
@@ -539,7 +543,7 @@ void DbgOutputInit(void) {
  * @retval None
  */
 void DbgOutputTraces(uint8_t *p_data, uint16_t size, void (*cb)(void)) {
-    HW_UART_Transmit_DMA(CFG_DEBUG_TRACE_UART, p_data, size, cb);
+    AppUart_TransmitDmaDebug(p_data, size, cb);
 
     return;
 }
@@ -574,3 +578,7 @@ void BSP_PB_Callback(Button_TypeDef Button) {
 }
 #endif
 
+void clbk_external_uart(uint8_t)
+{
+    
+}

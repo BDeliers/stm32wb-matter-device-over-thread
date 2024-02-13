@@ -59,32 +59,6 @@ extern "C" {
 /* USER CODE END Includes */
 
   /******************************************************************************
-   * HW UART
-   ******************************************************************************/
-  typedef enum
-  {
-    hw_uart1,
-    hw_uart2,
-    hw_lpuart1,
-  } hw_uart_id_t;
-
-  typedef enum
-  {
-    hw_uart_ok,
-    hw_uart_error,
-    hw_uart_busy,
-    hw_uart_to,
-  } hw_status_t;
-
-  void HW_UART_Init(hw_uart_id_t hw_uart_id);
-  void HW_UART_Receive_IT(hw_uart_id_t hw_uart_id, uint8_t *pData, uint16_t Size, void (*Callback)(void));
-  void HW_UART_Transmit_IT(hw_uart_id_t hw_uart_id, uint8_t *pData, uint16_t Size,  void (*Callback)(void));
-  hw_status_t HW_UART_Transmit(hw_uart_id_t hw_uart_id, uint8_t *p_data, uint16_t size,  uint32_t timeout);
-  hw_status_t HW_UART_Transmit_DMA(hw_uart_id_t hw_uart_id, uint8_t *p_data, uint16_t size, void (*Callback)(void));
-  void HW_UART_Interrupt_Handler(hw_uart_id_t hw_uart_id);
-  void HW_UART_DMA_Interrupt_Handler(hw_uart_id_t hw_uart_id);
-
-  /******************************************************************************
    * HW TimerServer
    ******************************************************************************/
   /* Exported types ------------------------------------------------------------*/

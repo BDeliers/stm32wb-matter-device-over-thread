@@ -848,6 +848,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/main.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/Core/src/app_uart.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/app_uart.c</locationURI>
+		</link>
+		<link>
 			<name>Application/User/Core/src/entropy_hardware_poll.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/entropy_hardware_poll.c</locationURI>
@@ -871,11 +876,6 @@
 			<name>Application/User/Core/src/hw_timerserver.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/hw_timerserver.c</locationURI>
-		</link>
-		<link>
-			<name>Application/User/Core/src/hw_uart.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/hw_uart.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/Core/src/stm32_lpm_if.c</name>

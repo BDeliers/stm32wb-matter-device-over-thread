@@ -22,12 +22,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32wbxx_it.h"
 #include "app_common.h"
+#include "app_uart.h"
 
 /* CONCURRENT MODE BLE/THREAD */
 /* External variables  -----------------------------------------------------------*/
 extern uint8_t ThreadEnable;
 extern TIM_HandleTypeDef htim17;
 extern QSPI_HandleTypeDef hqspi;
+extern UART_HandleTypeDef hlpuart1;
+extern UART_HandleTypeDef huart1;
+extern DMA_HandleTypeDef  hdma_usart1_tx;
 
 
 /* /THREAD */
@@ -173,34 +177,20 @@ void EXTI15_10_IRQHandler(void)
   BSP_PB_IRQHandler(BUTTON_USER1);
 }
 
-
-#if(CFG_HW_USART1_ENABLED == 1)
 void USART1_IRQHandler(void)
 {
-  HW_UART_Interrupt_Handler(hw_uart1);
+	HAL_UART_IRQHandler(&huart1);
 }
-#endif
 
-#if(CFG_HW_USART1_DMA_TX_SUPPORTED == 1)
-void CFG_HW_USART1_DMA_TX_IRQHandler( void )
+void DMA2_Channel4_IRQHandler( void )
 {
-  HW_UART_DMA_Interrupt_Handler(hw_uart1);
+	HAL_DMA_IRQHandler(huart1.hdmatx);
 }
-#endif
 
-#if(CFG_HW_LPUART1_ENABLED == 1)
 void LPUART1_IRQHandler(void)
 {
-  HW_UART_Interrupt_Handler(hw_lpuart1);
+	HAL_UART_IRQHandler(&hlpuart1);
 }
-#endif
-
-#if(CFG_HW_LPUART1_DMA_TX_SUPPORTED == 1)
-void CFG_HW_LPUART1_DMA_TX_IRQHandler( void )
-{
-  HW_UART_DMA_Interrupt_Handler(hw_lpuart1);
-}
-#endif
 
 
 /******************************************************************************/
