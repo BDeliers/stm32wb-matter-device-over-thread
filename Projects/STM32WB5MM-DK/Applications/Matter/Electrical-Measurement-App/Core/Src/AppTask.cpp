@@ -19,7 +19,7 @@
 /*STM32 includes*/
 #include "app_common.h"
 #include "app_thread.h"
-#include "app_uart.h"
+#include "app_linky.h"
 #include "stm32_lpm.h"
 #include "dbg_trace.h"
 #include "cmsis_os.h"
@@ -129,6 +129,8 @@ CHIP_ERROR AppTask::Init() {
     chip::DeviceLayer::ConnectivityMgr().SetThreadDeviceType(chip::DeviceLayer::ConnectivityManager::kThreadDeviceType_Router);
 
     chip::DeviceLayer::PlatformMgr().AddEventHandler(MatterEventHandler, 0);
+
+    AppLinky::GetInstance().Init();
 
     /*
     Initialize the business logic here !

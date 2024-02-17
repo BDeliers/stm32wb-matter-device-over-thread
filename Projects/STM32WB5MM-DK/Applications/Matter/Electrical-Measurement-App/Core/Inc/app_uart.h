@@ -16,6 +16,7 @@ bool AppUart_TransmitDebug(uint8_t* data, size_t size);
 
 // External UART related functions
 bool AppUart_InitExternal(void (*rx_callback)(uint8_t));
+bool AppUart_EnableRxExternal(bool enable);
 
 #ifdef __cplusplus
 }

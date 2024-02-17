@@ -118,8 +118,6 @@ static void ExtPA_Init( void );
 #endif
 static void ShciUserEvtProcess(void *argument);
 static void PushButtonEvtProcess(void *argument);
-
-static void clbk_external_uart(uint8_t);
 /* USER CODE END PFP */
 
 static void displayConcurrentMode(void);
@@ -180,9 +178,6 @@ void APPE_Init(void) {
     BSP_LCD_Refresh(0);
     UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Matter ElectricalMeasurementApp", CENTER_MODE);
     BSP_LCD_Refresh(0);
-
-    // Initialize external UART
-    AppUart_InitExternal(clbk_external_uart);
 
     /**
      * From now, the application is waiting for the ready event ( VS_HCI_C2_Ready )
@@ -577,8 +572,3 @@ void BSP_PB_Callback(Button_TypeDef Button) {
 #ifdef __cplusplus
 }
 #endif
-
-void clbk_external_uart(uint8_t)
-{
-    
-}

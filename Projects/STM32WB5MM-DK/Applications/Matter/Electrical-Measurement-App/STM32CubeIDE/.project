@@ -843,6 +843,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/app_entry.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/Core/src/app_linky.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/app_linky.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/Core/src/app_main.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/main.cpp</locationURI>
@@ -901,6 +906,11 @@
 			<name>Application/User/Core/src/stm_logging.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/stm_logging.c</locationURI>
+		</link>
+		<link>
+			<name>Application/User/Core/src/string_utils.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/string_utils.c</locationURI>
 		</link>
 		<link>
 			<name>Application/User/Core/src/syscalls.c</name>

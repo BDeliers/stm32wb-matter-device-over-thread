@@ -67,10 +67,21 @@ bool AppUart_InitExternal(void (*rx_callback)(uint8_t))
 
     clbk_rx_lpuart1 = rx_callback;
 
-    // Start RX
-    HAL_UART_Receive_IT(&hlpuart1, &buff_lpuart_rx, 1);
-
     return true;
+}
+
+bool AppUart_EnableRxExternal(bool enable)
+{
+    if (enable)
+    {
+        // Clean the overrun flag. It will happen for sure as the UART is always receiving
+        __HAL_UART_CLEAR_FLAG(&hlpuart1, UART_CLEAR_OREF);
+        return (HAL_UART_Receive_IT(&hlpuart1, &buff_lpuart_rx, 1) == HAL_OK);
+    }
+    else
+    {
+        return (HAL_UART_AbortReceive_IT(&hlpuart1) == HAL_OK);
+    }
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
