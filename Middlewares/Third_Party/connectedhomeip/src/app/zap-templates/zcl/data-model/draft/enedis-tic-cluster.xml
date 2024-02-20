@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) 2024 BDeliers
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configurator>
+  <domain name="Home Automation"/>
+
+  <cluster manufacturerCode="0xFFF1" >
+    <name>Enedis TIC</name>
+    <domain>Home Automation</domain>
+    <description>Attributes related to the Téléinformation Client (TIC) provided by the ENEDIS counters</description>
+    <code>0xFCBD</code>
+    <define>ENEDIS_TIC_CLUSTER</define>
+
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+  
+    <attribute side="server" code="0x000" define="ADSC" type="INT64U" min="0" max="0xFFFFFFFFFFFFFFFF" writable="false" default="0xFFFFFFFFFFFFFFFF" optional="true">Adresse Secondaire du Compteur</attribute>
+    <attribute side="server" code="0x001" define="VTIC" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Version de la TIC</attribute>
+    <attribute side="server" code="0x002" define="NGTF" type="CHAR_STRING"  length="17" writable="false" default="" optional="true">Nom du calendrier tarifaire fournisseur</attribute>
+    <attribute side="server" code="0x003" define="LTARF" type="CHAR_STRING"  length="17" writable="false" default="" optional="true">Libellé tarif fournisseur en cours</attribute>
+    <attribute side="server" code="0x004" define="EAST" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée totale (Wh)</attribute>
+    <attribute side="server" code="0x005" define="EASF01" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 01 (Wh)</attribute>
+    <attribute side="server" code="0x006" define="EASF02" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 02 (Wh)</attribute>
+    <attribute side="server" code="0x007" define="EASF03" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 03 (Wh)</attribute>
+    <attribute side="server" code="0x008" define="EASF04" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 04 (Wh)</attribute>
+    <attribute side="server" code="0x009" define="EASF05" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 05 (Wh)</attribute>
+    <attribute side="server" code="0x00A" define="EASF06" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 06 (Wh)</attribute>
+    <attribute side="server" code="0x00B" define="EASF07" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 07 (Wh)</attribute>
+    <attribute side="server" code="0x00C" define="EASF08" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 08 (Wh)</attribute>
+    <attribute side="server" code="0x00D" define="EASF09" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 09 (Wh)</attribute>
+    <attribute side="server" code="0x00E" define="EASF10" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Fournisseur, index 10 (Wh)</attribute>
+    <attribute side="server" code="0x00F" define="EASD01" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Distributeur, index 01 (Wh)</attribute>
+    <attribute side="server" code="0x010" define="EASD02" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Distributeur, index 02 (Wh)</attribute>
+    <attribute side="server" code="0x011" define="EASD03" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Distributeur, index 03 (Wh)</attribute>
+    <attribute side="server" code="0x012" define="EASD04" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active soutirée Distributeur, index 04 (Wh)</attribute>
+    <attribute side="server" code="0x013" define="EAIT" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie active injectée totale (Wh)</attribute>
+    <attribute side="server" code="0x014" define="ERQ1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie réactive Q1 totale (VArh)</attribute>
+    <attribute side="server" code="0x015" define="ERQ2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie réactive Q2 totale (VArh)</attribute>
+    <attribute side="server" code="0x016" define="ERQ3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie réactive Q3 totale (VArh)</attribute>
+    <attribute side="server" code="0x017" define="ERQ4" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Energie réactive Q4 totale (VArh)</attribute>
+    <attribute side="server" code="0x018" define="IRMS1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Courant efficace, phase 1 (A)</attribute>
+    <attribute side="server" code="0x019" define="IRMS2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Courant efficace, phase 2 (A)</attribute>
+    <attribute side="server" code="0x01A" define="IRMS3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Courant efficace, phase 3 (A)</attribute>
+    <attribute side="server" code="0x01B" define="URMS1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension efficace, phase 1 (V)</attribute>
+    <attribute side="server" code="0x01C" define="URMS2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension efficace, phase 2 (V)</attribute>
+    <attribute side="server" code="0x01D" define="URMS3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension efficace, phase 3 (V)</attribute>
+    <attribute side="server" code="0x01E" define="PREF" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Puissance app. de référence (PREF (kVA))</attribute>
+    <attribute side="server" code="0x01F" define="PCOUP" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Puissance app. de coupure (PCOUP (kVA))</attribute>
+    <attribute side="server" code="0x020" define="SINSTS" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. Instantanée soutirée (VA)</attribute>
+    <attribute side="server" code="0x021" define="SINSTS1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. Instantanée soutirée phase 1 (VA)</attribute>
+    <attribute side="server" code="0x022" define="SINSTS2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. instantanée soutirée phase 2 (VA)</attribute>
+    <attribute side="server" code="0x023" define="SINSTS3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. instantanée soutirée phase 3 (VA)</attribute>
+    <attribute side="server" code="0x024" define="SMAXSN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. max. soutirée n (VA)</attribute>
+    <attribute side="server" code="0x025" define="SMAXSN1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. max. soutirée n phase 1 (VA)</attribute>
+    <attribute side="server" code="0x026" define="SMAXSN2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. max. soutirée n phase 2 (VA)</attribute>
+    <attribute side="server" code="0x027" define="SMAXSN3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. max. soutirée n phase 3 (VA)</attribute>
+    <attribute side="server" code="0x028" define="SMAXSN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app max. soutirée n-1 (VA)</attribute>
+    <attribute side="server" code="0x029" define="SMAXSN1_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app max. soutirée n-1 phase 1 (VA)</attribute>
+    <attribute side="server" code="0x02A" define="SMAXSN2_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app max. soutirée n-1 phase 2 (VA)</attribute>
+    <attribute side="server" code="0x02B" define="SMAXSN3_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app max. soutirée n-1 phase 3 (VA)</attribute>
+    <attribute side="server" code="0x02C" define="SINSCTI" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. Instantanée injectée (VA)</attribute>
+    <attribute side="server" code="0x02D" define="SMAXIN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app. max. injectée n (VA)</attribute>
+    <attribute side="server" code="0x02E" define="SMAXIN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Puissance app max. injectée n-1 (VA)</attribute>
+    <attribute side="server" code="0x02F" define="CCASN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Point n de la courbe de charge active soutirée (W)</attribute>
+    <attribute side="server" code="0x030" define="CCASN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Point n-1 de la courbe de charge active soutirée (W)</attribute>
+    <attribute side="server" code="0x031" define="CCAIN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Point n de la courbe de charge active injectée (W)</attribute>
+    <attribute side="server" code="0x032" define="CCAIN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Point n-1 de la courbe de charge active injectée (W)</attribute>
+    <attribute side="server" code="0x033" define="UMOY1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension moy. ph. 1 (V)</attribute>
+    <attribute side="server" code="0x034" define="UMOY2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension moy. ph. 2 (V)</attribute>
+    <attribute side="server" code="0x035" define="UMOY3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Tension moy. ph. 3 (V)</attribute>
+    <attribute side="server" code="0x036" define="STGE" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">Registre de Statuts</attribute>
+    <attribute side="server" code="0x037" define="DPM1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Début Pointe Mobile 1</attribute>
+    <attribute side="server" code="0x038" define="FPM1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Fin Pointe Mobile 1</attribute>
+    <attribute side="server" code="0x039" define="DPM2" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Début Pointe Mobile 2</attribute>
+    <attribute side="server" code="0x03A" define="FPM2" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Fin Pointe Mobile 2</attribute>
+    <attribute side="server" code="0x03B" define="DPM3" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Début Pointe Mobile 3</attribute>
+    <attribute side="server" code="0x03C" define="FPM3" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Fin Pointe Mobile 3</attribute>
+    <attribute side="server" code="0x03D" define="MSG1" type="CHAR_STRING" length="33" writable="false" default="" optional="true">Message court</attribute>
+    <attribute side="server" code="0x03E" define="MSG2" type="CHAR_STRING" length="17" writable="false" default="" optional="true">Message Ultra court</attribute>
+    <attribute side="server" code="0x03F" define="PRM" type="INT64U" min="0" max="0xFFFFFFFFFFFFFFFF" writable="false" default="0xFFFFFFFFFFFFFFFF" optional="true">PRM</attribute>
+    <attribute side="server" code="0x040" define="RELAIS" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">Relais</attribute>
+    <attribute side="server" code="0x041" define="NTARF" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Numéro de l’index tarifaire en cours</attribute>
+    <attribute side="server" code="0x042" define="NJOURF" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Numéro du jour en cours calendrier fournisseur</attribute>
+    <attribute side="server" code="0x043" define="NJOURF_P1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">Numéro du prochain jour calendrier fournisseur</attribute>
+    <attribute side="server" code="0x044" define="PJOURF_P1" type="CHAR_STRING" length="99" writable="false" default="" optional="true">Profil du prochain jour calendrier fournisseur</attribute>
+    <attribute side="server" code="0x045" define="PPOINTE" type="CHAR_STRING" length="99" writable="false" default="" optional="true">Profil du prochain jour de pointe</attribute>
+  </cluster>
+</configurator>

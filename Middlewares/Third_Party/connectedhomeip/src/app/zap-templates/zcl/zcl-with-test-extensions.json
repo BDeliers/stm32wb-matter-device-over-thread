@@ -36,6 +36,7 @@
         "diagnostic-logs-cluster.xml",
         "door-lock-cluster.xml",
         "electrical-measurement-cluster.xml",
+        "enedis-tic-cluster.xml",
         "ethernet-network-diagnostics-cluster.xml",
         "fan-control-cluster.xml",
         "fault-injection-cluster.xml",

@@ -41,6 +41,15 @@
   /* 6 - Breadcrumb, */\
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\
 \
+\
+  /* Endpoint: 1, Cluster: Enedis TIC (server), big-endian */\
+\
+  /* 14 - Adresse Secondaire du Compteur, */\
+   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,\
+\
+  /* 22 - PRM, */\
+   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,\
+\
 }
 
 
@@ -58,11 +67,20 @@
   /* 6 - Breadcrumb, */\
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0x00, \
 \
+\
+  /* Endpoint: 1, Cluster: Enedis TIC (server), little-endian */\
+\
+  /* 14 - Adresse Secondaire du Compteur, */\
+  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,  0xFF, \
+\
+  /* 22 - PRM, */\
+  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,  0xFF, \
+\
 }
 
 #endif // BIGENDIAN_CPU
 
-#define GENERATED_DEFAULTS_COUNT (2)
+#define GENERATED_DEFAULTS_COUNT (4)
 
 // This is an array of EmberAfAttributeMinMaxValue structures.
 #define GENERATED_MIN_MAX_DEFAULT_COUNT 2
@@ -77,7 +95,7 @@
 
 
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 164
+#define GENERATED_ATTRIBUTE_COUNT 215
 #define GENERATED_ATTRIBUTES { \
 \
   /* Endpoint: 0, Cluster: Descriptor (server) */ \
@@ -252,42 +270,97 @@
   { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
   { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) }, /* ClusterRevision */  \
 \
+  /* Endpoint: 1, Cluster: Bridged Device Basic Information (server) */ \
+  { ZAP_SIMPLE_DEFAULT(1), 0x00000011, 1, ZAP_TYPE(BOOLEAN), 0 }, /* Reachable */  \
+  { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
+  { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
+\
   /* Endpoint: 1, Cluster: Electrical Measurement (server) */ \
   { ZAP_SIMPLE_DEFAULT(0x000000), 0x00000000, 4, ZAP_TYPE(BITMAP32), 0 }, /* measurement type */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000300, 2, ZAP_TYPE(INT16U), 0 }, /* ac frequency */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000301, 2, ZAP_TYPE(INT16U), 0 }, /* ac frequency min */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000302, 2, ZAP_TYPE(INT16U), 0 }, /* ac frequency max */  \
-  { ZAP_SIMPLE_DEFAULT(0x0000), 0x00000303, 2, ZAP_TYPE(INT16U), 0 }, /* neutral current */  \
-  { ZAP_SIMPLE_DEFAULT(0x000000), 0x00000304, 4, ZAP_TYPE(INT32S), 0 }, /* total active power */  \
-  { ZAP_SIMPLE_DEFAULT(0x000000), 0x00000305, 4, ZAP_TYPE(INT32S), 0 }, /* total reactive power */  \
-  { ZAP_SIMPLE_DEFAULT(0x000001), 0x00000306, 4, ZAP_TYPE(INT32U), 0 }, /* total apparent power */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000500, 2, ZAP_TYPE(INT16S), 0 }, /* instantaneous voltage */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000501, 2, ZAP_TYPE(INT16U), 0 }, /* instantaneous line current */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000502, 2, ZAP_TYPE(INT16S), 0 }, /* instantaneous active current */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000503, 2, ZAP_TYPE(INT16S), 0 }, /* instantaneous reactive current */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000504, 2, ZAP_TYPE(INT16S), 0 }, /* instantaneous power */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000505, 2, ZAP_TYPE(INT16U), 0 }, /* rms voltage */  \
-  { ZAP_SIMPLE_DEFAULT(0x8000), 0x00000506, 2, ZAP_TYPE(INT16U), 0 }, /* rms voltage min */  \
-  { ZAP_SIMPLE_DEFAULT(0x8000), 0x00000507, 2, ZAP_TYPE(INT16U), 0 }, /* rms voltage max */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000508, 2, ZAP_TYPE(INT16U), 0 }, /* rms current */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000509, 2, ZAP_TYPE(INT16U), 0 }, /* rms current min */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050A, 2, ZAP_TYPE(INT16U), 0 }, /* rms current max */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050B, 2, ZAP_TYPE(INT16S), 0 }, /* active power */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050C, 2, ZAP_TYPE(INT16S), 0 }, /* active power min */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050D, 2, ZAP_TYPE(INT16S), 0 }, /* active power max */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050E, 2, ZAP_TYPE(INT16S), 0 }, /* reactive power */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050F, 2, ZAP_TYPE(INT16U), 0 }, /* apparent power */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000801, 2, ZAP_TYPE(INT16S), 0 }, /* ac voltage overload */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000802, 2, ZAP_TYPE(INT16S), 0 }, /* ac current overload */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000803, 2, ZAP_TYPE(INT16S), 0 }, /* ac active power overload */  \
-  { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000804, 2, ZAP_TYPE(INT16S), 0 }, /* ac reactive power overload */  \
   { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
   { ZAP_SIMPLE_DEFAULT(3), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
+\
+  /* Endpoint: 1, Cluster: Enedis TIC (server) */ \
+  { ZAP_LONG_DEFAULTS_INDEX(14), 0xFFF10000, 8, ZAP_TYPE(INT64U), 0 }, /* Adresse Secondaire du Compteur */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10001, 1, ZAP_TYPE(INT8U), 0 }, /* Version de la TIC */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10002, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Nom du calendrier tarifaire fournisseur */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10003, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Libellé tarif fournisseur en cours */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10004, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée totale (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10005, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 01 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10006, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 02 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10007, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 03 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10008, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 04 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10009, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 05 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000A, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 06 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000B, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 07 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000C, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 08 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000D, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 09 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000E, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 10 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000F, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 01 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10010, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 02 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10011, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 03 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10012, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 04 (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10013, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active injectée totale (Wh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10014, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q1 totale (VArh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10015, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q2 totale (VArh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10016, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q3 totale (VArh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10017, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q4 totale (VArh) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10018, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 1 (A) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10019, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 2 (A) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001A, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 3 (A) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001B, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 1 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001C, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 2 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001D, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 3 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001E, 2, ZAP_TYPE(INT16U), 0 }, /* Puissance app. de référence (PREF (kVA)) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001F, 2, ZAP_TYPE(INT16U), 0 }, /* Puissance app. de coupure (PCOUP (kVA)) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10020, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée soutirée (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10021, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée soutirée phase 1 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10022, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. instantanée soutirée phase 2 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10023, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. instantanée soutirée phase 3 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10024, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10025, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 1 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10026, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 2 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10027, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 3 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10028, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10029, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 1 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002A, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 2 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002B, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 3 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002C, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée injectée (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002D, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. injectée n (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002E, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. injectée n-1 (VA) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002F, 4, ZAP_TYPE(INT32U), 0 }, /* Point n de la courbe de charge active soutirée (W) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10030, 4, ZAP_TYPE(INT32U), 0 }, /* Point n-1 de la courbe de charge active soutirée (W) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10031, 4, ZAP_TYPE(INT32U), 0 }, /* Point n de la courbe de charge active injectée (W) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10032, 4, ZAP_TYPE(INT32U), 0 }, /* Point n-1 de la courbe de charge active injectée (W) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10033, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 1 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10034, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 2 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10035, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 3 (V) */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10036, 4, ZAP_TYPE(INT32U), 0 }, /* Registre de Statuts */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10037, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10038, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10039, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003A, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003B, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003C, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 3 */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF1003D, 34, ZAP_TYPE(CHAR_STRING), 0 }, /* Message court */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF1003E, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Message Ultra court */  \
+  { ZAP_LONG_DEFAULTS_INDEX(22), 0xFFF1003F, 8, ZAP_TYPE(INT64U), 0 }, /* PRM */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10040, 2, ZAP_TYPE(INT16U), 0 }, /* Relais */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10041, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro de l’index tarifaire en cours */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10042, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro du jour en cours calendrier fournisseur */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10043, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro du prochain jour calendrier fournisseur */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10044, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* Profil du prochain jour calendrier fournisseur */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10045, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* Profil du prochain jour de pointe */  \
+  { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
+  { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
 }
 
 
 // clang-format off
-#define GENERATED_EVENT_COUNT 6
+#define GENERATED_EVENT_COUNT 10
 #define GENERATED_EVENTS { \
   /* Endpoint: 0, Cluster: Access Control (server) */ \
   /* EventList (index=0) */ \
@@ -301,6 +374,12 @@
   /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
   /* EventList (index=5) */ \
   0x00000003, /* BootReason */ \
+  /* Endpoint: 1, Cluster: Bridged Device Basic Information (server) */ \
+  /* EventList (index=6) */ \
+  0x00000000, /* StartUp */ \
+  0x00000001, /* ShutDown */ \
+  0x00000002, /* Leave */ \
+  0x00000003, /* ReachableChanged */ \
 }
 
 // clang-format on
@@ -402,7 +481,7 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
 // clang-format on
 
 // This is an array of EmberAfCluster structures.
-#define GENERATED_CLUSTER_COUNT 22
+#define GENERATED_CLUSTER_COUNT 24
 // clang-format off
 #define GENERATED_CLUSTERS { \
   { \
@@ -679,11 +758,37 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
       .eventCount = 0, \
     },\
   { \
+      /* Endpoint: 1, Cluster: Bridged Device Basic Information (server) */ \
+      .clusterId = 0x00000039, \
+      .attributes = ZAP_ATTRIBUTE_INDEX(134), \
+      .attributeCount = 3, \
+      .clusterSize = 7, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
+      .acceptedCommandList = nullptr, \
+      .generatedCommandList = nullptr, \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 6 ), \
+      .eventCount = 4, \
+    },\
+  { \
       /* Endpoint: 1, Cluster: Electrical Measurement (server) */ \
       .clusterId = 0x00000B04, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(134), \
-      .attributeCount = 30, \
-      .clusterSize = 70, \
+      .attributes = ZAP_ATTRIBUTE_INDEX(137), \
+      .attributeCount = 6, \
+      .clusterSize = 16, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
+      .acceptedCommandList = nullptr, \
+      .generatedCommandList = nullptr, \
+      .eventList = nullptr, \
+      .eventCount = 0, \
+    },\
+  { \
+      /* Endpoint: 1, Cluster: Enedis TIC (server) */ \
+      .clusterId = 0xFFF1FCBD, \
+      .attributes = ZAP_ATTRIBUTE_INDEX(143), \
+      .attributeCount = 72, \
+      .clusterSize = 504, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
@@ -695,12 +800,12 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
 
 // clang-format on
 
-#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 20
+#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 22
 
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES { \
   { ZAP_CLUSTER_INDEX(0), 18, 212 }, \
-  { ZAP_CLUSTER_INDEX(18), 4, 83 }, \
+  { ZAP_CLUSTER_INDEX(18), 6, 540 }, \
 }
 
 
@@ -715,7 +820,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (37)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (295)
+#define ATTRIBUTE_MAX_SIZE (752)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)
