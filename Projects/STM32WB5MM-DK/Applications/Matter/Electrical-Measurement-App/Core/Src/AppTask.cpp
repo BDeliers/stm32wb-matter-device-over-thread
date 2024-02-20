@@ -243,7 +243,7 @@ void AppTask::AppTaskMain(void *pvParameter)
 {
     AppEvent event;
     AppLinky::Field f;
-    char str_instant_power[20] = {0};
+    char str_disp_buffer[20] = {0};
 
     CHIP_ERROR err = sAppTask.Init();
 #if HIGHWATERMARK
@@ -282,12 +282,15 @@ void AppTask::AppTaskMain(void *pvParameter)
                     }
                 }
             
-                // Show the instant consumption on the display
+                // Show the instant consumption and current on the display
                 if (f == AppLinky::Field::SINSTS)
                 {
-                    snprintf(str_instant_power, sizeof(str_instant_power), "Pow= %lu VA", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::SINSTS));
                     UTIL_LCD_ClearStringLine(LINE(2));
-                    UTIL_LCD_DisplayStringAt(0, LINE(2), (uint8_t*) str_instant_power, CENTER_MODE);
+                    UTIL_LCD_ClearStringLine(LINE(3));
+                    snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Pow= %lu VA", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::SINSTS));
+                    UTIL_LCD_DisplayStringAt(0, LINE(2), (uint8_t*) str_disp_buffer, CENTER_MODE);
+                    snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Irms= %lu A", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::IRMS1));
+                    UTIL_LCD_DisplayStringAt(0, LINE(3), (uint8_t*) str_disp_buffer, CENTER_MODE);
                     BSP_LCD_Refresh(0);
                 }
             }
