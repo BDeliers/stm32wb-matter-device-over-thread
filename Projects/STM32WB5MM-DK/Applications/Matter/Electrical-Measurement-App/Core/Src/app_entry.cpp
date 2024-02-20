@@ -176,7 +176,7 @@ void APPE_Init(void) {
     UTIL_LCD_SetBackColor(SSD1315_COLOR_BLACK);
     BSP_LCD_Clear(0, SSD1315_COLOR_BLACK);
     BSP_LCD_Refresh(0);
-    UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Matter ElectricalMeasurementApp", CENTER_MODE);
+    UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Linky over Matter", CENTER_MODE);
     BSP_LCD_Refresh(0);
 
     /**
@@ -347,17 +347,17 @@ static void APPE_SysUserEvtRx(void *pPayload) {
 static void APPE_SysEvtError(SCHI_SystemErrCode_t ErrorCode) {
     switch (ErrorCode) {
     case ERR_THREAD_LLD_FATAL_ERROR:
-        APP_DBG("** ERR_THREAD : LLD_FATAL_ERROR \n")
+        APP_DBG("** ERR_THREAD : LLD_FATAL_ERROR \r\n")
         ;
         break;
 
     case ERR_THREAD_UNKNOWN_CMD:
-        APP_DBG("** ERR_THREAD : UNKNOWN_CMD \n")
+        APP_DBG("** ERR_THREAD : UNKNOWN_CMD \r\n")
         ;
         break;
 
     default:
-        APP_DBG("** ERR_THREAD : ErroCode=%d \n", ErrorCode)
+        APP_DBG("** ERR_THREAD : ErroCode=%d \r\n", ErrorCode)
         ;
         break;
     }

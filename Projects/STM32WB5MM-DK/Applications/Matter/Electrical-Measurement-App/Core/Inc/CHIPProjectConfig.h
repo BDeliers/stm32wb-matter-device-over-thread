@@ -50,12 +50,16 @@
 /**
  * CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID
  *
- * 0x8005: example lighting app
+ * 0x8018: BDeliers Linky app
  */
-#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8004
+#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8018
 
-/* define Device type based on the application */
-#define CHIP_DEVICE_CONFIG_DEVICE_TYPE 257 // 0x0101  Dimmable Bulb
+/**
+ * CHIP_DEVICE_CONFIG_DEVICE_TYPE
+ *
+ * 0x0013: Bridge device
+ */
+#define CHIP_DEVICE_CONFIG_DEVICE_TYPE 0x0013
 
 /**
  * CHIP_DEVICE_CONFIG_TEST_SERIAL_NUMBER
@@ -63,7 +67,7 @@
  * Enables the use of a hard-coded default serial number if none
  * is found in Chip NV storage.
  */
-#define CHIP_DEVICE_CONFIG_TEST_SERIAL_NUMBER "TEST_SN"
+#define CHIP_DEVICE_CONFIG_TEST_SERIAL_NUMBER "BD_LINKY"
 
 /**
  * CHIP_CONFIG_EVENT_LOGGING_UTC_TIMESTAMPS

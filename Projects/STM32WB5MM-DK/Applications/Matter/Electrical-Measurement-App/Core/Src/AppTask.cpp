@@ -56,38 +56,62 @@ using namespace chip;
 AppTask AppTask::sAppTask;
 chip::DeviceLayer::FactoryDataProvider mFactoryDataProvider;
 
-#define APP_FUNCTION_BUTTON BUTTON_USER1
-#define STM32ThreadDataSet "STM32DataSet"
-#define APP_EVENT_QUEUE_SIZE 10
-#define NVM_TIMEOUT 1000  // timer to handle PB to save data in nvm or do a factory reset
-#define DELAY_NVM 5000 // save data in nvm after commissioning with a delay of 5 sec
+#define APP_FUNCTION_BUTTON         BUTTON_USER1
+#define STM32ThreadDataSet          "STM32DataSet"
+#define APP_EVENT_QUEUE_SIZE        10U
+#define CLUSTER_UPDATE_QUEUE_SIZE   50U
+#define NVM_TIMEOUT                 1000U  // Timer to handle PB to save data in nvm or do a factory reset
+#define DELAY_NVM                   5000U  // Save data in nvm after commissioning with a delay of 5 sec
+#define ENDPOINT_BRIDGE_DEVICE      1U
 
-static QueueHandle_t sAppEventQueue;
-TimerHandle_t sPushButtonTimeoutTimer;
-TimerHandle_t DelayNvmTimer;
-const osThreadAttr_t AppTask_attr = { .name = APPTASK_NAME, .attr_bits =
-APP_ATTR_BITS, .cb_mem = APP_CB_MEM, .cb_size = APP_CB_SIZE, .stack_mem =
-APP_STACK_MEM, .stack_size = APP_STACK_SIZE, .priority =
-APP_PRIORITY };
+static QueueHandle_t    sAppEventQueue;
+static osMessageQId     sClusterUpdateQueue;
+TimerHandle_t           sPushButtonTimeoutTimer;
+TimerHandle_t           sDelayNvmTimer;
+const osThreadAttr_t AppTask_attr = { 
+                                    .name = APPTASK_NAME,
+                                    .attr_bits = APP_ATTR_BITS,
+                                    .cb_mem = APP_CB_MEM,
+                                    .cb_size = APP_CB_SIZE,
+                                    .stack_mem = APP_STACK_MEM,
+                                    .stack_size = APP_STACK_SIZE,
+                                    .priority = APP_PRIORITY
+                                };
 
-static bool sIsThreadProvisioned = false;
-static bool sIsThreadEnabled = false;
-static bool sHaveBLEConnections = false;
-static bool sFabricNeedSaved = false;
-static bool sFailCommissioning = false;
-static bool sHaveFabric = false;
-static uint8_t NvmTimerCpt = 0;
-static uint8_t NvmButtonStateCpt = 0;
+static bool sIsThreadProvisioned    = false;
+static bool sIsThreadEnabled        = false;
+static bool sHaveBLEConnections     = false;
+static bool sFabricNeedSaved        = false;
+static bool sFailCommissioning      = false;
+static bool sHaveFabric             = false;
+static uint8_t NvmTimerCpt          = 0;
+static uint8_t NvmButtonStateCpt    = 0;
 
-CHIP_ERROR AppTask::StartAppTask() {
+static chip::AttributeId map_linky_to_matter[AppLinky::Field::Field_COUNT] = {0};
+
+CHIP_ERROR AppTask::StartAppTask()
+{
+    // Create the queue to handle app events
     sAppEventQueue = xQueueCreate(APP_EVENT_QUEUE_SIZE, sizeof(AppEvent));
-    if (sAppEventQueue == NULL) {
+    if (sAppEventQueue == NULL)
+    {
         APP_DBG("Failed to allocate app event queue");
         return CHIP_ERROR_NO_MEMORY;
     }
 
+    // Create the queue to handle Linky events
+    osMessageQueueAttr_t q_attr = {
+        .name = "Queue - Cluster update"
+    };
+    sClusterUpdateQueue = osMessageQueueNew(CLUSTER_UPDATE_QUEUE_SIZE, sizeof(AppLinky::Field), &q_attr);
+    if (sClusterUpdateQueue == NULL)
+    {
+        APP_DBG("Failed to allocate cluster update queue");
+        return CHIP_ERROR_NO_MEMORY;
+    }
+
     // Start App task.
-    osThreadNew(AppTaskMain, NULL, &AppTask_attr);
+    osThreadNew(AppTaskMain, this, &AppTask_attr);
 
     return CHIP_NO_ERROR;
 }
@@ -117,7 +141,7 @@ CHIP_ERROR AppTask::Init() {
             TimerEventHandler // timer callback handler
             );
 
-    DelayNvmTimer = xTimerCreate("Delay_NVM", // Just a text name, not used by the RTOS kernel
+    sDelayNvmTimer = xTimerCreate("Delay_NVM", // Just a text name, not used by the RTOS kernel
             DELAY_NVM,        // == default timer period (mS)
             pdFALSE,               //  timer reload
             0,       // init timer
@@ -130,16 +154,14 @@ CHIP_ERROR AppTask::Init() {
 
     chip::DeviceLayer::PlatformMgr().AddEventHandler(MatterEventHandler, 0);
 
-    AppLinky::GetInstance().Init();
+    // Business logic init
+    AppLinky::GetInstance().Init(sClusterUpdateQueue);
 
-    /*
-    Initialize the business logic here !
-    err = MyCluster().Init();
-    if (err != CHIP_NO_ERROR) {
-        APP_DBG("MyCluster().Init() failed");
-        return err;
-    }
-    */
+    // Initialize the Linky to Matter translation map
+    memset(map_linky_to_matter, chip::kInvalidAttributeId, sizeof(map_linky_to_matter));
+    map_linky_to_matter[AppLinky::Field::SINSTS] = chip::app::Clusters::ElectricalMeasurement::Attributes::ApparentPower::Id;
+    map_linky_to_matter[AppLinky::Field::IRMS1]  = chip::app::Clusters::ElectricalMeasurement::Attributes::RmsCurrent::Id;
+    map_linky_to_matter[AppLinky::Field::URMS1]  = chip::app::Clusters::ElectricalMeasurement::Attributes::RmsVoltage::Id;
 
 #if CHIP_DEVICE_CONFIG_ENABLE_EXTENDED_DISCOVERY
 	chip::app::DnssdServer::Instance().SetExtendedDiscoveryTimeoutSecs(extDiscTimeoutSecs);
@@ -163,33 +185,38 @@ CHIP_ERROR AppTask::Init() {
     chip::DeviceLayer::ConfigurationMgr().LogDeviceConfig();
 
     // Open commissioning after boot if no fabric was available
-    if (chip::Server::GetInstance().GetFabricTable().FabricCount() == 0) {
-        PrintOnboardingCodes(
-                chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
+    if (chip::Server::GetInstance().GetFabricTable().FabricCount() == 0)
+    {
+        PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
         // Enable BLE advertisements
         chip::Server::GetInstance().GetCommissioningWindowManager().OpenBasicCommissioningWindow();
         APP_DBG("BLE advertising started. Waiting for Pairing.");
-    } else {  // try to attach to the thread network
+    }
+    else
+    {  // try to attach to the thread network
         uint8_t datasetBytes[Thread::kSizeOperationalDataset];
         size_t datasetLength = 0;
         char Message[20];
-        snprintf(Message, sizeof(Message), "Fabric Found: %d",
-                chip::Server::GetInstance().GetFabricTable().FabricCount());
+        snprintf(Message, sizeof(Message), "Fabric Found: %d", chip::Server::GetInstance().GetFabricTable().FabricCount());
         APP_BLE_Init_Dyn_3();
         UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) Message, LEFT_MODE);
         BSP_LCD_Refresh(0);
-        CHIP_ERROR error = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr().Get(STM32ThreadDataSet, datasetBytes,
-                sizeof(datasetBytes), &datasetLength);
-        if (error == CHIP_NO_ERROR) {
+        CHIP_ERROR error = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr().Get(STM32ThreadDataSet, datasetBytes, sizeof(datasetBytes), &datasetLength);
+
+        if (error == CHIP_NO_ERROR)
+        {
             chip::DeviceLayer::ThreadStackMgr().SetThreadProvision(ByteSpan(datasetBytes, datasetLength));
             chip::DeviceLayer::ThreadStackMgr().SetThreadEnabled(true);
-        } else {
+        }
+        else
+        {
             APP_DBG("Thread network Data set was not found");
         }
     }
 
     err = chip::DeviceLayer::PlatformMgr().StartEventLoopTask();
-    if (err != CHIP_NO_ERROR) {
+    if (err != CHIP_NO_ERROR)
+    {
         APP_DBG("PlatformMgr().StartEventLoopTask() failed");
     }
 
@@ -212,8 +239,11 @@ CHIP_ERROR AppTask::InitMatter() {
     return err;
 }
 
-void AppTask::AppTaskMain(void *pvParameter) {
+void AppTask::AppTaskMain(void *pvParameter)
+{
     AppEvent event;
+    AppLinky::Field f;
+    char str_instant_power[20] = {0};
 
     CHIP_ERROR err = sAppTask.Init();
 #if HIGHWATERMARK
@@ -222,23 +252,51 @@ void AppTask::AppTaskMain(void *pvParameter) {
 	size_t max_used;
 	size_t max_blocks;
 #endif // endif HIGHWATERMARK
-    if (err != CHIP_NO_ERROR) {
+
+    if (err != CHIP_NO_ERROR)
+    {
         APP_DBG("App task init failled ");
     }
 
     APP_DBG("App Task started");
-    while (true) {
 
+    while (true)
+    {
         BaseType_t eventReceived = xQueueReceive(sAppEventQueue, &event, pdMS_TO_TICKS(10));
-        while (eventReceived == pdTRUE) {
+        while (eventReceived == pdTRUE)
+        {
             sAppTask.DispatchEvent(&event);
             eventReceived = xQueueReceive(sAppEventQueue, &event, 0);
         }
+
+        while (osMessageQueueGet(sClusterUpdateQueue, &f, 0, 0) == osOK)
+        {
+            if (f < AppLinky::Field::Field_COUNT)
+            {
+                if (map_linky_to_matter[f] != chip::kInvalidAttributeId)
+                {                    
+                    if (!sAppTask.UpdateMatterCluster(chip::app::Clusters::ElectricalMeasurement::Id, 
+                        map_linky_to_matter[f], AppLinky::GetInstance().GetFieldU32(f)))
+                    {
+                        ChipLogError(NotSpecified, "Error setting a Matter attribute");
+                    }
+                }
+            
+                // Show the instant consumption on the display
+                if (f == AppLinky::Field::SINSTS)
+                {
+                    snprintf(str_instant_power, sizeof(str_instant_power), "Pow= %lu VA", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::SINSTS));
+                    UTIL_LCD_ClearStringLine(LINE(2));
+                    UTIL_LCD_DisplayStringAt(0, LINE(2), (uint8_t*) str_instant_power, CENTER_MODE);
+                    BSP_LCD_Refresh(0);
+                }
+            }
+        }
+
 #if HIGHWATERMARK
 		uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
 		vPortGetHeapStats(&HeapStatsInfo);
 		mbedtls_memory_buffer_alloc_max_get(&max_used, &max_blocks );
-
 #endif // endif HIGHWATERMARK
     }
 
@@ -360,7 +418,7 @@ void AppTask::UpdateNvmEventHandler(AppEvent *aEvent) {
         } else {
             APP_DBG("Failed to SAVE NVM");
             // restart timer to save nvm later
-            xTimerStart(DelayNvmTimer, 0);
+            xTimerStart(sDelayNvmTimer, 0);
         }
     } else if (sAppTask.mFunction == kFunction_FactoryReset) {
         APP_DBG("FACTORY RESET");
@@ -368,53 +426,61 @@ void AppTask::UpdateNvmEventHandler(AppEvent *aEvent) {
     }
 }
 
-void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event, intptr_t) {
-    switch (event->Type) {
-    case chip::DeviceLayer::DeviceEventType::kServiceProvisioningChange: {
+void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event, intptr_t)
+{
+    switch (event->Type)
+    {
+    case chip::DeviceLayer::DeviceEventType::kServiceProvisioningChange:
+    {
         sIsThreadProvisioned = event->ServiceProvisioningChange.IsServiceProvisioned;
         UpdateLCD();
         break;
     }
 
-    case chip::DeviceLayer::DeviceEventType::kThreadConnectivityChange: {
+    case chip::DeviceLayer::DeviceEventType::kThreadConnectivityChange:
+    {
         sIsThreadEnabled = (event->ThreadConnectivityChange.Result == chip::DeviceLayer::kConnectivity_Established);
         UpdateLCD();
         break;
     }
 
-    case chip::DeviceLayer::DeviceEventType::kCHIPoBLEConnectionEstablished: {
+    case chip::DeviceLayer::DeviceEventType::kCHIPoBLEConnectionEstablished:
+    {
         sHaveBLEConnections = true;
         APP_DBG("kCHIPoBLEConnectionEstablished");
         UpdateLCD();
         break;
     }
 
-    case chip::DeviceLayer::DeviceEventType::kCHIPoBLEConnectionClosed: {
+    case chip::DeviceLayer::DeviceEventType::kCHIPoBLEConnectionClosed:
+    {
         sHaveBLEConnections = false;
         APP_DBG("kCHIPoBLEConnectionClosed");
         UpdateLCD();
         if (sFabricNeedSaved) {
             APP_DBG("Start timer to save nvm after commissioning finish");
             // timer is used to avoid to much trafic on m0 side after the end of a commissioning
-            xTimerStart(DelayNvmTimer, 0);
+            xTimerStart(sDelayNvmTimer, 0);
             sFabricNeedSaved = false;
         }
         break;
     }
 
-    case chip::DeviceLayer::DeviceEventType::kCommissioningComplete: {
+    case chip::DeviceLayer::DeviceEventType::kCommissioningComplete:
+    {
         sFabricNeedSaved = true;
         sHaveFabric = true;
         // check if ble is on, since before save in nvm we need to stop m0, Better to write in nvm when m0 is less busy
         if (sHaveBLEConnections == false) {
             APP_DBG("Start timer to save nvm after commissioning finish");
-            xTimerStart(DelayNvmTimer, 0);
+            xTimerStart(sDelayNvmTimer, 0);
             sFabricNeedSaved = false; // put to false to avoid save in nvm 2 times
         }
         UpdateLCD();
         break;
     }
-    case chip::DeviceLayer::DeviceEventType::kFailSafeTimerExpired: {
+    case chip::DeviceLayer::DeviceEventType::kFailSafeTimerExpired:
+    {
         UpdateLCD();
         sFailCommissioning = true;
         break;
@@ -424,3 +490,44 @@ void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event
     }
 }
 
+bool AppTask::UpdateMatterCluster(chip::ClusterId cluster, chip::AttributeId attribute, uint32_t val)
+{
+    using namespace chip::app::Clusters;
+    using namespace ElectricalMeasurement::Attributes;
+
+    if (cluster != ElectricalMeasurement::Id)
+    {
+        return false;
+    }
+
+    bool ret = false;
+
+    chip::DeviceLayer::PlatformMgr().LockChipStack();
+
+    switch (attribute)
+    {
+    case ApparentPower::Id:
+    {
+        ret = (ApparentPower::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
+        break;
+    }
+    case RmsCurrent::Id:
+    {
+        ret = (RmsCurrent::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
+        break;
+    }
+    case RmsVoltage::Id:
+    {
+        ret = (RmsVoltage::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
+        break;
+    }    
+    default:
+    {
+        ret = false;
+    }
+    }
+
+    chip::DeviceLayer::PlatformMgr().UnlockChipStack();
+
+    return ret;
+}

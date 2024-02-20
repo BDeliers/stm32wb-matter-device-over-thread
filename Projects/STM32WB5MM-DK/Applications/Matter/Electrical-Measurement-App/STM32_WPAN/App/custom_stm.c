@@ -191,7 +191,7 @@ static SVCCTL_EvtAckStatus_t Matter_Event_Handler(void *Event) {
 				 * Descriptor handle
 				 */
 				return_value = SVCCTL_EvtAckFlowEnable;
-				APP_DBG_MSG("Subscribe for c2 notification\n");
+				APP_DBG_MSG("Subscribe for c2 notification\r\n");
 				/**
 				 * Indicate to application
 				 */

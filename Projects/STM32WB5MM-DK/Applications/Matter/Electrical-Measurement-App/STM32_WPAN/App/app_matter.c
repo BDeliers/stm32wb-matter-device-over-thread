@@ -138,7 +138,7 @@ void APP_MATTER_Notification(MATTER_App_Notification_evt_t *pNotification) {
 		message.connid = pNotification->ConnectionHandle;
 		message.notif = 1;
 		P2P_Server_App_Context.Notification_Status = 1;
-		APP_DBG_MSG("-- Matter APPLICATION SERVER : INDICATE ENABLED\n");
+		APP_DBG_MSG("-- Matter APPLICATION SERVER : INDICATE ENABLED\r\n");
 		APP_DBG_MSG(" \n\r");
 		BLETXCharCCCDWriteCb(&message);
 		/* USER CODE END P2PS_STM__NOTIFY_ENABLED_EVT */
@@ -149,7 +149,7 @@ void APP_MATTER_Notification(MATTER_App_Notification_evt_t *pNotification) {
 		message.connid = pNotification->ConnectionHandle;
 		message.notif = 0;
 		P2P_Server_App_Context.Notification_Status = 0;
-		APP_DBG_MSG("-- Matter APPLICATION SERVER : INDICATE DISABLED\n");
+		APP_DBG_MSG("-- Matter APPLICATION SERVER : INDICATE DISABLED\r\n");
 		APP_DBG_MSG(" \n\r");
 		BLETXCharCCCDWriteCb(&message);
 		/* USER CODE END P2PS_STM_NOTIFY_DISABLED_EVT */

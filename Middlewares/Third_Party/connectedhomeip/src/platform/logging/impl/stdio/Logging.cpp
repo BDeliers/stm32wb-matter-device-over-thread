@@ -14,7 +14,7 @@ void ENFORCE_FORMAT(3, 0) LogV(const char * module, uint8_t category, const char
 {
     printf("CHIP:%s: ", module);
     vprintf(msg, v);
-    printf("\n");
+    printf("\r\n");
 }
 
 } // namespace Platform

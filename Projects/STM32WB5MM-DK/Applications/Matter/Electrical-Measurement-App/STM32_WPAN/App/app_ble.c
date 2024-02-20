@@ -382,7 +382,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt) {
 		if (disconnection_complete_event->Connection_Handle == BleApplicationContext.BleApplicationContext_legacy.connectionHandle) {
 			BleApplicationContext.BleApplicationContext_legacy.connectionHandle = 0;
 			BleApplicationContext.Device_Connection_Status = APP_BLE_IDLE;
-			APP_DBG_MSG("\r\n\r** DISCONNECTION EVENT WITH CLIENT \n");
+			APP_DBG_MSG("\r\n\r** DISCONNECTION EVENT WITH CLIENT \r\n");
 		}
 		/*
 		 * SPECIFIC to P2P Server APP
@@ -405,7 +405,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt) {
 		/* USER CODE END EVT_LE_META_EVENT */
 		switch (meta_evt->subevent) {
 		case HCI_LE_CONNECTION_UPDATE_COMPLETE_SUBEVT_CODE:
-			APP_DBG_MSG("\r\n\r** CONNECTION UPDATE EVENT WITH CLIENT \n");
+			APP_DBG_MSG("\r\n\r** CONNECTION UPDATE EVENT WITH CLIENT \r\n");
 
 			/**
 			 * The connection is done, there is no need anymore to schedule the LP ADV
@@ -421,7 +421,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *pckt) {
 
 			// HW_TS_Stop(BleApplicationContext.Advertising_mgr_timer_Id);
 
-			APP_DBG_MSG("EVT_LE_CONN_COMPLETE for connection handle 0x%x\n", connection_complete_event->Connection_Handle);
+			APP_DBG_MSG("EVT_LE_CONN_COMPLETE for connection handle 0x%x\r\n", connection_complete_event->Connection_Handle);
 
 			if (BleApplicationContext.Device_Connection_Status == APP_BLE_LP_CONNECTING) {
 				/* Connection as client */
@@ -581,12 +581,12 @@ static void Ble_Hci_Gap_Gatt_Init(void) {
 		APPBLE_GAP_DEVICE_NAME_LENGTH, &gap_service_handle, &gap_dev_name_char_handle, &gap_appearance_char_handle);
 
 		if (aci_gatt_update_char_value(gap_service_handle, gap_dev_name_char_handle, 0, strlen(name), (uint8_t*) name)) {
-			BLE_DBG_SVCCTL_MSG("Device Name aci_gatt_update_char_value failed.\n");
+			BLE_DBG_SVCCTL_MSG("Device Name aci_gatt_update_char_value failed.\r\n");
 		}
 	}
 
 	if (aci_gatt_update_char_value(gap_service_handle, gap_appearance_char_handle, 0, 2, (uint8_t*) &appearance)) {
-		BLE_DBG_SVCCTL_MSG("Appearance aci_gatt_update_char_value failed.\n");
+		BLE_DBG_SVCCTL_MSG("Appearance aci_gatt_update_char_value failed.\r\n");
 	}
 	/**
 	 * Initialize Default PHY
@@ -640,7 +640,7 @@ void APP_BLE_Adv_Request(APP_BLE_ConnStatus_t New_Status) {
 		Max_Inter = CFG_LP_CONN_ADV_INTERVAL_MAX;
 	}
 
-	APP_DBG_MSG("First index in %d state \n", BleApplicationContext.Device_Connection_Status);
+	APP_DBG_MSG("First index in %d state \r\n", BleApplicationContext.Device_Connection_Status);
 
 	if ((New_Status == APP_BLE_LP_ADV)
 			&& ((BleApplicationContext.Device_Connection_Status == APP_BLE_FAST_ADV)
@@ -650,7 +650,7 @@ void APP_BLE_Adv_Request(APP_BLE_ConnStatus_t New_Status) {
 		if (ret == BLE_STATUS_SUCCESS) {
 			APP_DBG_MSG("Successfully Stopped Advertising");
 		} else {
-			APP_DBG_MSG("Stop Advertising Failed , result: %d \n", ret);
+			APP_DBG_MSG("Stop Advertising Failed , result: %d \r\n", ret);
 		}
 	}
 
@@ -665,18 +665,18 @@ void APP_BLE_Adv_Request(APP_BLE_ConnStatus_t New_Status) {
 	/* Update Advertising data */
 	ret = aci_gap_update_adv_data(sizeof(manuf_data), (uint8_t*) manuf_data);
 
-	APP_DBG_MSG("check set discoverable , result: %d \n", ret);
+	APP_DBG_MSG("check set discoverable , result: %d \r\n", ret);
 	if (ret == BLE_STATUS_SUCCESS) {
 		if (New_Status == APP_BLE_FAST_ADV) {
-			APP_DBG_MSG("Successfully Start Fast Advertising \n");
+			APP_DBG_MSG("Successfully Start Fast Advertising \r\n");
 		} else {
-			APP_DBG_MSG("Successfully Start Low Power Advertising \n");
+			APP_DBG_MSG("Successfully Start Low Power Advertising \r\n");
 		}
 	} else {
 		if (New_Status == APP_BLE_FAST_ADV) {
-			APP_DBG_MSG("Start Fast Advertising Failed , result: %d \n", ret);
+			APP_DBG_MSG("Start Fast Advertising Failed , result: %d \r\n", ret);
 		} else {
-			APP_DBG_MSG("Start Low Power Advertising Failed , result: %d \n", ret);
+			APP_DBG_MSG("Start Low Power Advertising Failed , result: %d \r\n", ret);
 		}
 	}
 

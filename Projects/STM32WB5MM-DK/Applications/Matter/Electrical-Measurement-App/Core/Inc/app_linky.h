@@ -4,23 +4,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "cmsis_os.h"
+
 /*
  * The Linky incoming bytes will be processed and parsed in this module
  */
 class AppLinky 
 {
 public:
-    static AppLinky& GetInstance(void)
-    {
-        static AppLinky singleton;
-        return singleton;
-    }
-
-    bool Init(void);
-    bool StartReceiving(void);
-
-    static void UartRxCallback(uint8_t byte);
-
     enum Field : uint8_t {
         ADSC,           // Adresse Secondaire du Compteur
         VTIC,           // Version de la TIC
@@ -103,12 +94,27 @@ public:
         AUTUMN,
     };
 
+    static AppLinky& GetInstance(void)
+    {
+        static AppLinky singleton;
+        return singleton;
+    }
+
+    // Initialize the module with the queue that will be used to notify attribute changes
+    bool Init(osMessageQId feedback_queue);
+    bool StartReceiving(void);
+
+    uint32_t GetFieldU32(Field field);
+
+    static void UartRxCallback(uint8_t byte);
+
 private:
     uint8_t buffer_incoming_bytes[1256];
     uint8_t* ptr_incoming_bytes;
     bool frame_started;
     bool frame_received;
     bool ready_to_receive;
+    osMessageQId queue_data_update;
 
     static void Handler(void* arg);
 
@@ -116,6 +122,9 @@ private:
     bool ProcessLine(char* start, char* end);
     bool ParseAndSaveDate(const char* data);
     Field StringToField(const char* str);
+
+    bool UpdateFieldU32(Field field, uint32_t val);
+    bool UpdateFieldSTR(Field field, char* str);
 
     // Linky data
     Season   season;

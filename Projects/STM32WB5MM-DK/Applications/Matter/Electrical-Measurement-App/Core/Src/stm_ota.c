@@ -85,7 +85,7 @@ STM_OTA_StatusTypeDef STM_OTA_Read_Chunk(void) {
 	addressRead += CHUNK_SIZE;
 
 	if (addressRead > 1040000) {
-		printf("data %s at addr %d\n", aRxBuffer, addressRead);
+		printf("data %s at addr %d\r\n", aRxBuffer, addressRead);
 	}
 	return error;
 }

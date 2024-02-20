@@ -2,7 +2,6 @@
 #include "app_uart.h"
 #include "string_utils.h"
 
-#include "cmsis_os.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -33,7 +32,7 @@ static const char* LABELS[AppLinky::Field::Field_COUNT] = {
 };
 static uint8_t MAX_LABEL_LEN = 12;
 
-bool AppLinky::Init(void)
+bool AppLinky::Init(osMessageQId feedback_queue)
 {
     // Prepare and start a thread to handle the business logic
     const osThreadAttr_t attr = { 
@@ -43,6 +42,8 @@ bool AppLinky::Init(void)
                         };
 
     osThreadNew(AppLinky::Handler, this, &attr);
+
+    queue_data_update = feedback_queue;
 
     AppUart_InitExternal(UartRxCallback);
     
@@ -138,6 +139,16 @@ bool AppLinky::StartReceiving(void)
     return true;
 }
 
+uint32_t AppLinky::GetFieldU32(Field field)
+{
+    if (field < Field::Field_COUNT)
+    {
+        return linky_data[field];
+    }
+
+    return 0;
+}
+
 void AppLinky::UartRxCallback(uint8_t byte)
 {
     AppLinky& self = AppLinky::GetInstance();
@@ -222,6 +233,10 @@ bool AppLinky::ProcessLine(char* start, char* end)
             }
             data_start  = checksum_start;
             checksum_start = static_cast<char*>(memchr(data_start, ASCII_HTAB, end-data_start)) + 1;
+
+            // Write to the queue that the field has was updated
+            Field f = Field::DATE;
+            osMessageQueuePut(queue_data_update, &f, 0, 0);
         }
         *(checksum_start-1) = 0;
 
@@ -229,32 +244,16 @@ bool AppLinky::ProcessLine(char* start, char* end)
         switch (field)
         {
         case ADSC:
-        {
-            strcpy(linky_address, data_start);
-            strtrim(linky_address, ASCII_SPACE);
-            break;
-        }
         case NGTF:
-        {
-            strcpy(linky_calname, data_start);
-            strtrim(linky_calname, ASCII_SPACE);
-            break;
-        }
         case LTARF:
+        case PRM:
         {
-            strcpy(linky_curprice, data_start);
-            strtrim(linky_curprice, ASCII_SPACE);
+            UpdateFieldSTR(field, data_start);
             break;
         }
         case STGE:
         {
-            linky_data[Field::STGE] = strtoul(data_start, NULL, 16);
-            break;
-        }
-        case PRM:
-        {
-            strcpy(linky_prm, data_start);
-            strtrim(linky_prm, ASCII_SPACE);
+            UpdateFieldU32(field, strtoul(data_start, NULL, 16));
             break;
         }
         // Discarded
@@ -273,7 +272,7 @@ bool AppLinky::ProcessLine(char* start, char* end)
 
         default:
         {
-            linky_data[field] = strtoul(data_start, NULL, 10);
+            UpdateFieldU32(field, strtoul(data_start, NULL, 10));
             break;
         }
         }
@@ -329,4 +328,66 @@ AppLinky::Field AppLinky::StringToField(const char* str)
     }
 
     return Field_COUNT;
+}
+
+bool AppLinky::UpdateFieldU32(Field field, uint32_t val)
+{
+    if (field < Field::Field_COUNT)
+    {
+        // Copy the new value to the array and update the app about the change
+        if (linky_data[field] != val)
+        {
+            linky_data[field] = val;
+            osMessageQueuePut(queue_data_update, &field, 0, 0);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+bool AppLinky::UpdateFieldSTR(Field field, char* str)
+{
+    if ((field < Field::Field_COUNT) && (str != NULL))
+    {
+        char* dest = NULL;
+        switch (field)
+        {
+        case ADSC:
+        {
+            dest = linky_address;
+            break;
+        }
+        case NGTF:
+        {
+            dest = linky_calname;
+            break;
+        }
+        case LTARF:
+        {
+            dest = linky_curprice;
+            break;
+        }
+        case PRM:
+        {
+            dest = linky_prm;
+            break;
+        }
+        default:
+            break;
+        }
+
+        if (dest != NULL)
+        {
+            if (strcmp(dest, str) != 0)
+            {
+                strcpy(dest, str);
+                strtrim(dest, ASCII_SPACE);
+                osMessageQueuePut(queue_data_update, &field, 0, 0);
+            }
+            return true;
+        }
+    }
+
+    return false;
 }
