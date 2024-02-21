@@ -25,6 +25,7 @@
 #include "cmsis_os.h"
 #include "AppEvent.h"
 #include "AppTask.h"
+#include "AppClusterMgr.h"
 #include "flash_wb.h"
 #include "stm32wb5mm_dk_lcd.h"
 #include "stm32_lcd.h"
@@ -37,6 +38,7 @@
 #include <app/server/OnboardingCodesUtil.h>
 #include <app-common/zap-generated/attribute-type.h>
 #include <app-common/zap-generated/attributes/Accessors.h>
+#include <app-common/zap-generated/cluster-objects.h>
 #include <app/server/Dnssd.h>
 #include <app/server/Server.h>
 #include <app/util/attribute-storage.h>
@@ -52,6 +54,7 @@
 #endif
 
 using namespace chip;
+using namespace chip::app::Clusters;
 
 AppTask AppTask::sAppTask;
 chip::DeviceLayer::FactoryDataProvider mFactoryDataProvider;
@@ -62,7 +65,6 @@ chip::DeviceLayer::FactoryDataProvider mFactoryDataProvider;
 #define CLUSTER_UPDATE_QUEUE_SIZE   50U
 #define NVM_TIMEOUT                 1000U  // Timer to handle PB to save data in nvm or do a factory reset
 #define DELAY_NVM                   5000U  // Save data in nvm after commissioning with a delay of 5 sec
-#define ENDPOINT_BRIDGE_DEVICE      1U
 
 static QueueHandle_t    sAppEventQueue;
 static osMessageQId     sClusterUpdateQueue;
@@ -87,7 +89,26 @@ static bool sHaveFabric             = false;
 static uint8_t NvmTimerCpt          = 0;
 static uint8_t NvmButtonStateCpt    = 0;
 
-static chip::AttributeId map_linky_to_matter[AppLinky::Field::Field_COUNT] = {0};
+static const chip::AttributeId map_linky_to_matter[AppLinky::Field::Field_COUNT] = {
+    EnedisTic::Attributes::Adsc::Id, EnedisTic::Attributes::Vtic::Id, kInvalidAttributeId, EnedisTic::Attributes::Ngtf::Id, 
+    EnedisTic::Attributes::Ltarf::Id, EnedisTic::Attributes::East::Id, EnedisTic::Attributes::Easf01::Id, EnedisTic::Attributes::Easf02::Id, 
+    EnedisTic::Attributes::Easf03::Id, EnedisTic::Attributes::Easf04::Id, EnedisTic::Attributes::Easf05::Id, EnedisTic::Attributes::Easf06::Id, 
+    EnedisTic::Attributes::Easf07::Id, EnedisTic::Attributes::Easf08::Id, EnedisTic::Attributes::Easf09::Id, EnedisTic::Attributes::Easf10::Id, 
+    EnedisTic::Attributes::Easd01::Id, EnedisTic::Attributes::Easd02::Id, EnedisTic::Attributes::Easd03::Id, EnedisTic::Attributes::Easd04::Id, 
+    EnedisTic::Attributes::Eait::Id, EnedisTic::Attributes::Erq1::Id, EnedisTic::Attributes::Erq2::Id, EnedisTic::Attributes::Erq3::Id, 
+    EnedisTic::Attributes::Erq4::Id, EnedisTic::Attributes::Irms1::Id, EnedisTic::Attributes::Irms2::Id, EnedisTic::Attributes::Irms3::Id, 
+    EnedisTic::Attributes::Urms1::Id, EnedisTic::Attributes::Urms2::Id, EnedisTic::Attributes::Urms3::Id, EnedisTic::Attributes::Pref::Id, 
+    EnedisTic::Attributes::Pcoup::Id, EnedisTic::Attributes::Sinsts::Id, EnedisTic::Attributes::Sinsts1::Id, EnedisTic::Attributes::Sinsts2::Id, 
+    EnedisTic::Attributes::Sinsts3::Id, EnedisTic::Attributes::Smaxsn::Id, EnedisTic::Attributes::Smaxsn1::Id, EnedisTic::Attributes::Smaxsn2::Id, 
+    EnedisTic::Attributes::Smaxsn3::Id, EnedisTic::Attributes::SmaxsnM1::Id, EnedisTic::Attributes::Smaxsn1M1::Id, EnedisTic::Attributes::Smaxsn2M1::Id, 
+    EnedisTic::Attributes::Smaxsn3M1::Id, EnedisTic::Attributes::Sinscti::Id, EnedisTic::Attributes::Smaxin::Id, EnedisTic::Attributes::SmaxinM1::Id, 
+    EnedisTic::Attributes::Ccasn::Id, EnedisTic::Attributes::CcasnM1::Id, EnedisTic::Attributes::Ccain::Id, EnedisTic::Attributes::CcainM1::Id, 
+    EnedisTic::Attributes::Umoy1::Id, EnedisTic::Attributes::Umoy2::Id, EnedisTic::Attributes::Umoy3::Id, EnedisTic::Attributes::Stge::Id, 
+    EnedisTic::Attributes::Dpm1::Id, EnedisTic::Attributes::Fpm1::Id, EnedisTic::Attributes::Dpm2::Id, EnedisTic::Attributes::Fpm2::Id, 
+    EnedisTic::Attributes::Dpm3::Id, EnedisTic::Attributes::Fpm3::Id, EnedisTic::Attributes::Msg1::Id, EnedisTic::Attributes::Msg2::Id, 
+    EnedisTic::Attributes::Prm::Id, EnedisTic::Attributes::Relais::Id, EnedisTic::Attributes::Ntarf::Id, EnedisTic::Attributes::Njourf::Id, 
+    EnedisTic::Attributes::NjourfP1::Id, EnedisTic::Attributes::PjourfP1::Id, EnedisTic::Attributes::Ppointe::Id,
+};
 
 CHIP_ERROR AppTask::StartAppTask()
 {
@@ -156,12 +177,7 @@ CHIP_ERROR AppTask::Init() {
 
     // Business logic init
     AppLinky::GetInstance().Init(sClusterUpdateQueue);
-
-    // Initialize the Linky to Matter translation map
-    memset(map_linky_to_matter, chip::kInvalidAttributeId, sizeof(map_linky_to_matter));
-    map_linky_to_matter[AppLinky::Field::SINSTS] = chip::app::Clusters::ElectricalMeasurement::Attributes::ApparentPower::Id;
-    map_linky_to_matter[AppLinky::Field::IRMS1]  = chip::app::Clusters::ElectricalMeasurement::Attributes::RmsCurrent::Id;
-    map_linky_to_matter[AppLinky::Field::URMS1]  = chip::app::Clusters::ElectricalMeasurement::Attributes::RmsVoltage::Id;
+    AppClusterMgr::GetInstance().Init();
 
 #if CHIP_DEVICE_CONFIG_ENABLE_EXTENDED_DISCOVERY
 	chip::app::DnssdServer::Instance().SetExtendedDiscoveryTimeoutSecs(extDiscTimeoutSecs);
@@ -196,11 +212,11 @@ CHIP_ERROR AppTask::Init() {
     {  // try to attach to the thread network
         uint8_t datasetBytes[Thread::kSizeOperationalDataset];
         size_t datasetLength = 0;
-        char Message[20];
-        snprintf(Message, sizeof(Message), "Fabric Found: %d", chip::Server::GetInstance().GetFabricTable().FabricCount());
+        //char Message[20];
+        //snprintf(Message, sizeof(Message), "Fabric Found: %d", chip::Server::GetInstance().GetFabricTable().FabricCount());
         APP_BLE_Init_Dyn_3();
-        UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) Message, LEFT_MODE);
-        BSP_LCD_Refresh(0);
+        //UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) Message, LEFT_MODE);
+        //BSP_LCD_Refresh(0);
         CHIP_ERROR error = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr().Get(STM32ThreadDataSet, datasetBytes, sizeof(datasetBytes), &datasetLength);
 
         if (error == CHIP_NO_ERROR)
@@ -274,9 +290,9 @@ void AppTask::AppTaskMain(void *pvParameter)
             if (f < AppLinky::Field::Field_COUNT)
             {
                 if (map_linky_to_matter[f] != chip::kInvalidAttributeId)
-                {                    
-                    if (!sAppTask.UpdateMatterCluster(chip::app::Clusters::ElectricalMeasurement::Id, 
-                        map_linky_to_matter[f], AppLinky::GetInstance().GetFieldU32(f)))
+                {
+                    if (!AppClusterMgr::GetInstance().UpdateMatterClusterU32(chip::app::Clusters::EnedisTic::Id,
+                                                        map_linky_to_matter[f], AppLinky::GetInstance().GetFieldU32(f)))
                     {
                         ChipLogError(NotSpecified, "Error setting a Matter attribute");
                     }
@@ -436,14 +452,14 @@ void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event
     case chip::DeviceLayer::DeviceEventType::kServiceProvisioningChange:
     {
         sIsThreadProvisioned = event->ServiceProvisioningChange.IsServiceProvisioned;
-        UpdateLCD();
+        //UpdateLCD();
         break;
     }
 
     case chip::DeviceLayer::DeviceEventType::kThreadConnectivityChange:
     {
         sIsThreadEnabled = (event->ThreadConnectivityChange.Result == chip::DeviceLayer::kConnectivity_Established);
-        UpdateLCD();
+        //UpdateLCD();
         break;
     }
 
@@ -451,7 +467,7 @@ void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event
     {
         sHaveBLEConnections = true;
         APP_DBG("kCHIPoBLEConnectionEstablished");
-        UpdateLCD();
+        //UpdateLCD();
         break;
     }
 
@@ -459,7 +475,7 @@ void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event
     {
         sHaveBLEConnections = false;
         APP_DBG("kCHIPoBLEConnectionClosed");
-        UpdateLCD();
+        //UpdateLCD();
         if (sFabricNeedSaved) {
             APP_DBG("Start timer to save nvm after commissioning finish");
             // timer is used to avoid to much trafic on m0 side after the end of a commissioning
@@ -479,58 +495,16 @@ void AppTask::MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent *event
             xTimerStart(sDelayNvmTimer, 0);
             sFabricNeedSaved = false; // put to false to avoid save in nvm 2 times
         }
-        UpdateLCD();
+        //UpdateLCD();
         break;
     }
     case chip::DeviceLayer::DeviceEventType::kFailSafeTimerExpired:
     {
-        UpdateLCD();
+        //UpdateLCD();
         sFailCommissioning = true;
         break;
     }
     default:
         break;
     }
-}
-
-bool AppTask::UpdateMatterCluster(chip::ClusterId cluster, chip::AttributeId attribute, uint32_t val)
-{
-    using namespace chip::app::Clusters;
-    using namespace ElectricalMeasurement::Attributes;
-
-    if (cluster != ElectricalMeasurement::Id)
-    {
-        return false;
-    }
-
-    bool ret = false;
-
-    chip::DeviceLayer::PlatformMgr().LockChipStack();
-
-    switch (attribute)
-    {
-    case ApparentPower::Id:
-    {
-        ret = (ApparentPower::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
-        break;
-    }
-    case RmsCurrent::Id:
-    {
-        ret = (RmsCurrent::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
-        break;
-    }
-    case RmsVoltage::Id:
-    {
-        ret = (RmsVoltage::Set(ENDPOINT_BRIDGE_DEVICE, val) == EMBER_ZCL_STATUS_SUCCESS);
-        break;
-    }    
-    default:
-    {
-        ret = false;
-    }
-    }
-
-    chip::DeviceLayer::PlatformMgr().UnlockChipStack();
-
-    return ret;
 }

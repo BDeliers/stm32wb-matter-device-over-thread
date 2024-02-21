@@ -54,7 +54,6 @@ private:
        static void MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent * event, intptr_t arg);
        static void UpdateLCD(void);
        static void UpdateNvmEventHandler(AppEvent * aEvent);
-       static bool UpdateMatterCluster(chip::ClusterId cluster, chip::AttributeId attribute, uint32_t val);
 
     enum Function_t
     {

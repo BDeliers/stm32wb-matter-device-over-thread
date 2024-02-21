@@ -823,6 +823,11 @@
 			<locationURI>PARENT-6-PROJECT_LOC/Middlewares/Third_Party/mbedtls/library/xtea.c</locationURI>
 		</link>
 		<link>
+			<name>Application/User/Core/src/AppClusterMgr.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/AppClusterMgr.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/Core/src/AppTask.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/Core/Src/AppTask.cpp</locationURI>

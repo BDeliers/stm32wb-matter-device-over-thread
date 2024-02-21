@@ -44,7 +44,7 @@
 \
   /* Endpoint: 1, Cluster: Enedis TIC (server), big-endian */\
 \
-  /* 14 - Adresse Secondaire du Compteur, */\
+  /* 14 - ADSC, */\
    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,\
 \
   /* 22 - PRM, */\
@@ -70,7 +70,7 @@
 \
   /* Endpoint: 1, Cluster: Enedis TIC (server), little-endian */\
 \
-  /* 14 - Adresse Secondaire du Compteur, */\
+  /* 14 - ADSC, */\
   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,  0xFF, \
 \
   /* 22 - PRM, */\
@@ -284,76 +284,76 @@
   { ZAP_SIMPLE_DEFAULT(3), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
 \
   /* Endpoint: 1, Cluster: Enedis TIC (server) */ \
-  { ZAP_LONG_DEFAULTS_INDEX(14), 0xFFF10000, 8, ZAP_TYPE(INT64U), 0 }, /* Adresse Secondaire du Compteur */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10001, 1, ZAP_TYPE(INT8U), 0 }, /* Version de la TIC */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF10002, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Nom du calendrier tarifaire fournisseur */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF10003, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Libellé tarif fournisseur en cours */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10004, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée totale (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10005, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 01 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10006, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 02 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10007, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 03 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10008, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 04 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10009, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 05 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000A, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 06 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000B, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 07 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000C, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 08 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000D, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 09 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000E, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Fournisseur, index 10 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1000F, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 01 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10010, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 02 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10011, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 03 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10012, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active soutirée Distributeur, index 04 (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10013, 4, ZAP_TYPE(INT32U), 0 }, /* Energie active injectée totale (Wh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10014, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q1 totale (VArh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10015, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q2 totale (VArh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10016, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q3 totale (VArh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10017, 4, ZAP_TYPE(INT32U), 0 }, /* Energie réactive Q4 totale (VArh) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10018, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 1 (A) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10019, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 2 (A) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001A, 2, ZAP_TYPE(INT16U), 0 }, /* Courant efficace, phase 3 (A) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001B, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 1 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001C, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 2 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001D, 2, ZAP_TYPE(INT16U), 0 }, /* Tension efficace, phase 3 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001E, 2, ZAP_TYPE(INT16U), 0 }, /* Puissance app. de référence (PREF (kVA)) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1001F, 2, ZAP_TYPE(INT16U), 0 }, /* Puissance app. de coupure (PCOUP (kVA)) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10020, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée soutirée (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10021, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée soutirée phase 1 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10022, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. instantanée soutirée phase 2 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10023, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. instantanée soutirée phase 3 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10024, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10025, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 1 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10026, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 2 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10027, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. soutirée n phase 3 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10028, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10029, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 1 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002A, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 2 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002B, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. soutirée n-1 phase 3 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002C, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. Instantanée injectée (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002D, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app. max. injectée n (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002E, 4, ZAP_TYPE(INT32U), 0 }, /* Puissance app max. injectée n-1 (VA) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1002F, 4, ZAP_TYPE(INT32U), 0 }, /* Point n de la courbe de charge active soutirée (W) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10030, 4, ZAP_TYPE(INT32U), 0 }, /* Point n-1 de la courbe de charge active soutirée (W) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10031, 4, ZAP_TYPE(INT32U), 0 }, /* Point n de la courbe de charge active injectée (W) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10032, 4, ZAP_TYPE(INT32U), 0 }, /* Point n-1 de la courbe de charge active injectée (W) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10033, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 1 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10034, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 2 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10035, 2, ZAP_TYPE(INT16U), 0 }, /* Tension moy. ph. 3 (V) */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10036, 4, ZAP_TYPE(INT32U), 0 }, /* Registre de Statuts */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10037, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 1 */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10038, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 1 */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10039, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 2 */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003A, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 2 */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003B, 1, ZAP_TYPE(INT8U), 0 }, /* Début Pointe Mobile 3 */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1003C, 1, ZAP_TYPE(INT8U), 0 }, /* Fin Pointe Mobile 3 */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF1003D, 34, ZAP_TYPE(CHAR_STRING), 0 }, /* Message court */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF1003E, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* Message Ultra court */  \
-  { ZAP_LONG_DEFAULTS_INDEX(22), 0xFFF1003F, 8, ZAP_TYPE(INT64U), 0 }, /* PRM */  \
-  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10040, 2, ZAP_TYPE(INT16U), 0 }, /* Relais */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10041, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro de l’index tarifaire en cours */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10042, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro du jour en cours calendrier fournisseur */  \
-  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10043, 1, ZAP_TYPE(INT8U), 0 }, /* Numéro du prochain jour calendrier fournisseur */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF10044, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* Profil du prochain jour calendrier fournisseur */  \
-  { ZAP_EMPTY_DEFAULT(), 0xFFF10045, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* Profil du prochain jour de pointe */  \
+  { ZAP_LONG_DEFAULTS_INDEX(14), 0xFFF10000, 8, ZAP_TYPE(INT64U), 0 }, /* ADSC */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10001, 1, ZAP_TYPE(INT8U), 0 }, /* VTIC */  \
+  { ZAP_LONG_DEFAULTS_INDEX(22), 0xFFF10002, 8, ZAP_TYPE(INT64U), 0 }, /* PRM */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10003, 2, ZAP_TYPE(INT16U), 0 }, /* RELAIS */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10004, 4, ZAP_TYPE(INT32U), 0 }, /* STGE */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10010, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* NGTF */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10011, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* LTARF */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10012, 2, ZAP_TYPE(INT16U), 0 }, /* PREF */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10013, 2, ZAP_TYPE(INT16U), 0 }, /* PCOUP */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10014, 1, ZAP_TYPE(INT8U), 0 }, /* NTARF */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10015, 1, ZAP_TYPE(INT8U), 0 }, /* NJOURF */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10016, 1, ZAP_TYPE(INT8U), 0 }, /* NJOURF_P1 */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10017, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* PJOURF_P1 */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10018, 100, ZAP_TYPE(CHAR_STRING), 0 }, /* PPOINTE */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF10019, 34, ZAP_TYPE(CHAR_STRING), 0 }, /* MSG1 */  \
+  { ZAP_EMPTY_DEFAULT(), 0xFFF1001A, 18, ZAP_TYPE(CHAR_STRING), 0 }, /* MSG2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10030, 4, ZAP_TYPE(INT32U), 0 }, /* EAST */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10031, 4, ZAP_TYPE(INT32U), 0 }, /* EASF01 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10032, 4, ZAP_TYPE(INT32U), 0 }, /* EASF02 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10033, 4, ZAP_TYPE(INT32U), 0 }, /* EASF03 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10034, 4, ZAP_TYPE(INT32U), 0 }, /* EASF04 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10035, 4, ZAP_TYPE(INT32U), 0 }, /* EASF05 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10036, 4, ZAP_TYPE(INT32U), 0 }, /* EASF06 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10037, 4, ZAP_TYPE(INT32U), 0 }, /* EASF07 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10038, 4, ZAP_TYPE(INT32U), 0 }, /* EASF08 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10039, 4, ZAP_TYPE(INT32U), 0 }, /* EASF09 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003A, 4, ZAP_TYPE(INT32U), 0 }, /* EASF10 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003B, 4, ZAP_TYPE(INT32U), 0 }, /* EASD01 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003C, 4, ZAP_TYPE(INT32U), 0 }, /* EASD02 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003D, 4, ZAP_TYPE(INT32U), 0 }, /* EASD03 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003E, 4, ZAP_TYPE(INT32U), 0 }, /* EASD04 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1003F, 4, ZAP_TYPE(INT32U), 0 }, /* EAIT */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10040, 4, ZAP_TYPE(INT32U), 0 }, /* ERQ1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10041, 4, ZAP_TYPE(INT32U), 0 }, /* ERQ2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10042, 4, ZAP_TYPE(INT32U), 0 }, /* ERQ3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10043, 4, ZAP_TYPE(INT32U), 0 }, /* ERQ4 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10050, 2, ZAP_TYPE(INT16U), 0 }, /* IRMS1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10051, 2, ZAP_TYPE(INT16U), 0 }, /* IRMS2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10052, 2, ZAP_TYPE(INT16U), 0 }, /* IRMS3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10053, 2, ZAP_TYPE(INT16U), 0 }, /* URMS1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10054, 2, ZAP_TYPE(INT16U), 0 }, /* URMS2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF10055, 2, ZAP_TYPE(INT16U), 0 }, /* URMS3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10056, 4, ZAP_TYPE(INT32U), 0 }, /* SINSTS */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10057, 4, ZAP_TYPE(INT32U), 0 }, /* SINSTS1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10058, 4, ZAP_TYPE(INT32U), 0 }, /* SINSTS2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10059, 4, ZAP_TYPE(INT32U), 0 }, /* SINSTS3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1005A, 2, ZAP_TYPE(INT16U), 0 }, /* UMOY1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1005B, 2, ZAP_TYPE(INT16U), 0 }, /* UMOY2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFF), 0xFFF1005C, 2, ZAP_TYPE(INT16U), 0 }, /* UMOY3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10060, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10061, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10062, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10063, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10064, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10065, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN1_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10066, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN2_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10067, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXSN3_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10068, 4, ZAP_TYPE(INT32U), 0 }, /* SINSCTI */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF10069, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXIN */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1006A, 4, ZAP_TYPE(INT32U), 0 }, /* SMAXIN_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1006B, 4, ZAP_TYPE(INT32U), 0 }, /* CCASN */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1006C, 4, ZAP_TYPE(INT32U), 0 }, /* CCASN_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1006D, 4, ZAP_TYPE(INT32U), 0 }, /* CCAIN */  \
+  { ZAP_SIMPLE_DEFAULT(0xFFFFFFFF), 0xFFF1006E, 4, ZAP_TYPE(INT32U), 0 }, /* CCAIN_M1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF1006F, 1, ZAP_TYPE(INT8U), 0 }, /* DPM1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10070, 1, ZAP_TYPE(INT8U), 0 }, /* FPM1 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10071, 1, ZAP_TYPE(INT8U), 0 }, /* DPM2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10072, 1, ZAP_TYPE(INT8U), 0 }, /* FPM2 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10073, 1, ZAP_TYPE(INT8U), 0 }, /* DPM3 */  \
+  { ZAP_SIMPLE_DEFAULT(0xFF), 0xFFF10074, 1, ZAP_TYPE(INT8U), 0 }, /* FPM3 */  \
   { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
   { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
 }

@@ -469,6 +469,12 @@
 #define CHIP_PRINTCLUSTER_CLIENT_MONITORING_CLUSTER
 #endif
 
+#if defined(ZCL_USING_ENEDIS_TIC_CLUSTER_SERVER) || defined(ZCL_USING_ENEDIS_TIC_CLUSTER_CLIENT)
+#define CHIP_PRINTCLUSTER_ENEDIS_TIC_CLUSTER { chip::app::Clusters::EnedisTic::Id, "Enedis TIC" },
+#else
+#define CHIP_PRINTCLUSTER_ENEDIS_TIC_CLUSTER
+#endif
+
 #if defined(ZCL_USING_UNIT_TESTING_CLUSTER_SERVER) || defined(ZCL_USING_UNIT_TESTING_CLUSTER_CLIENT)
 #define CHIP_PRINTCLUSTER_UNIT_TESTING_CLUSTER { chip::app::Clusters::UnitTesting::Id, "Unit Testing" },
 #else
@@ -552,6 +558,7 @@
     CHIP_PRINTCLUSTER_ACCOUNT_LOGIN_CLUSTER                                                                                        \
     CHIP_PRINTCLUSTER_ELECTRICAL_MEASUREMENT_CLUSTER                                                                               \
     CHIP_PRINTCLUSTER_CLIENT_MONITORING_CLUSTER                                                                                    \
+    CHIP_PRINTCLUSTER_ENEDIS_TIC_CLUSTER                                                                                           \
     CHIP_PRINTCLUSTER_UNIT_TESTING_CLUSTER                                                                                         \
     CHIP_PRINTCLUSTER_FAULT_INJECTION_CLUSTER
 

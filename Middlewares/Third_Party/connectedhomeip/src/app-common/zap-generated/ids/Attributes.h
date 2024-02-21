@@ -4939,6 +4939,316 @@ static constexpr AttributeId Id = Globals::Attributes::ClusterRevision::Id;
 } // namespace Attributes
 } // namespace ClientMonitoring
 
+namespace EnedisTic {
+namespace Attributes {
+
+namespace Adsc {
+static constexpr AttributeId Id = 0xFFF10000;
+} // namespace Adsc
+
+namespace Vtic {
+static constexpr AttributeId Id = 0xFFF10001;
+} // namespace Vtic
+
+namespace Prm {
+static constexpr AttributeId Id = 0xFFF10002;
+} // namespace Prm
+
+namespace Relais {
+static constexpr AttributeId Id = 0xFFF10003;
+} // namespace Relais
+
+namespace Stge {
+static constexpr AttributeId Id = 0xFFF10004;
+} // namespace Stge
+
+namespace Ngtf {
+static constexpr AttributeId Id = 0xFFF10010;
+} // namespace Ngtf
+
+namespace Ltarf {
+static constexpr AttributeId Id = 0xFFF10011;
+} // namespace Ltarf
+
+namespace Pref {
+static constexpr AttributeId Id = 0xFFF10012;
+} // namespace Pref
+
+namespace Pcoup {
+static constexpr AttributeId Id = 0xFFF10013;
+} // namespace Pcoup
+
+namespace Ntarf {
+static constexpr AttributeId Id = 0xFFF10014;
+} // namespace Ntarf
+
+namespace Njourf {
+static constexpr AttributeId Id = 0xFFF10015;
+} // namespace Njourf
+
+namespace NjourfP1 {
+static constexpr AttributeId Id = 0xFFF10016;
+} // namespace NjourfP1
+
+namespace PjourfP1 {
+static constexpr AttributeId Id = 0xFFF10017;
+} // namespace PjourfP1
+
+namespace Ppointe {
+static constexpr AttributeId Id = 0xFFF10018;
+} // namespace Ppointe
+
+namespace Msg1 {
+static constexpr AttributeId Id = 0xFFF10019;
+} // namespace Msg1
+
+namespace Msg2 {
+static constexpr AttributeId Id = 0xFFF1001A;
+} // namespace Msg2
+
+namespace East {
+static constexpr AttributeId Id = 0xFFF10030;
+} // namespace East
+
+namespace Easf01 {
+static constexpr AttributeId Id = 0xFFF10031;
+} // namespace Easf01
+
+namespace Easf02 {
+static constexpr AttributeId Id = 0xFFF10032;
+} // namespace Easf02
+
+namespace Easf03 {
+static constexpr AttributeId Id = 0xFFF10033;
+} // namespace Easf03
+
+namespace Easf04 {
+static constexpr AttributeId Id = 0xFFF10034;
+} // namespace Easf04
+
+namespace Easf05 {
+static constexpr AttributeId Id = 0xFFF10035;
+} // namespace Easf05
+
+namespace Easf06 {
+static constexpr AttributeId Id = 0xFFF10036;
+} // namespace Easf06
+
+namespace Easf07 {
+static constexpr AttributeId Id = 0xFFF10037;
+} // namespace Easf07
+
+namespace Easf08 {
+static constexpr AttributeId Id = 0xFFF10038;
+} // namespace Easf08
+
+namespace Easf09 {
+static constexpr AttributeId Id = 0xFFF10039;
+} // namespace Easf09
+
+namespace Easf10 {
+static constexpr AttributeId Id = 0xFFF1003A;
+} // namespace Easf10
+
+namespace Easd01 {
+static constexpr AttributeId Id = 0xFFF1003B;
+} // namespace Easd01
+
+namespace Easd02 {
+static constexpr AttributeId Id = 0xFFF1003C;
+} // namespace Easd02
+
+namespace Easd03 {
+static constexpr AttributeId Id = 0xFFF1003D;
+} // namespace Easd03
+
+namespace Easd04 {
+static constexpr AttributeId Id = 0xFFF1003E;
+} // namespace Easd04
+
+namespace Eait {
+static constexpr AttributeId Id = 0xFFF1003F;
+} // namespace Eait
+
+namespace Erq1 {
+static constexpr AttributeId Id = 0xFFF10040;
+} // namespace Erq1
+
+namespace Erq2 {
+static constexpr AttributeId Id = 0xFFF10041;
+} // namespace Erq2
+
+namespace Erq3 {
+static constexpr AttributeId Id = 0xFFF10042;
+} // namespace Erq3
+
+namespace Erq4 {
+static constexpr AttributeId Id = 0xFFF10043;
+} // namespace Erq4
+
+namespace Irms1 {
+static constexpr AttributeId Id = 0xFFF10050;
+} // namespace Irms1
+
+namespace Irms2 {
+static constexpr AttributeId Id = 0xFFF10051;
+} // namespace Irms2
+
+namespace Irms3 {
+static constexpr AttributeId Id = 0xFFF10052;
+} // namespace Irms3
+
+namespace Urms1 {
+static constexpr AttributeId Id = 0xFFF10053;
+} // namespace Urms1
+
+namespace Urms2 {
+static constexpr AttributeId Id = 0xFFF10054;
+} // namespace Urms2
+
+namespace Urms3 {
+static constexpr AttributeId Id = 0xFFF10055;
+} // namespace Urms3
+
+namespace Sinsts {
+static constexpr AttributeId Id = 0xFFF10056;
+} // namespace Sinsts
+
+namespace Sinsts1 {
+static constexpr AttributeId Id = 0xFFF10057;
+} // namespace Sinsts1
+
+namespace Sinsts2 {
+static constexpr AttributeId Id = 0xFFF10058;
+} // namespace Sinsts2
+
+namespace Sinsts3 {
+static constexpr AttributeId Id = 0xFFF10059;
+} // namespace Sinsts3
+
+namespace Umoy1 {
+static constexpr AttributeId Id = 0xFFF1005A;
+} // namespace Umoy1
+
+namespace Umoy2 {
+static constexpr AttributeId Id = 0xFFF1005B;
+} // namespace Umoy2
+
+namespace Umoy3 {
+static constexpr AttributeId Id = 0xFFF1005C;
+} // namespace Umoy3
+
+namespace Smaxsn {
+static constexpr AttributeId Id = 0xFFF10060;
+} // namespace Smaxsn
+
+namespace Smaxsn1 {
+static constexpr AttributeId Id = 0xFFF10061;
+} // namespace Smaxsn1
+
+namespace Smaxsn2 {
+static constexpr AttributeId Id = 0xFFF10062;
+} // namespace Smaxsn2
+
+namespace Smaxsn3 {
+static constexpr AttributeId Id = 0xFFF10063;
+} // namespace Smaxsn3
+
+namespace SmaxsnM1 {
+static constexpr AttributeId Id = 0xFFF10064;
+} // namespace SmaxsnM1
+
+namespace Smaxsn1M1 {
+static constexpr AttributeId Id = 0xFFF10065;
+} // namespace Smaxsn1M1
+
+namespace Smaxsn2M1 {
+static constexpr AttributeId Id = 0xFFF10066;
+} // namespace Smaxsn2M1
+
+namespace Smaxsn3M1 {
+static constexpr AttributeId Id = 0xFFF10067;
+} // namespace Smaxsn3M1
+
+namespace Sinscti {
+static constexpr AttributeId Id = 0xFFF10068;
+} // namespace Sinscti
+
+namespace Smaxin {
+static constexpr AttributeId Id = 0xFFF10069;
+} // namespace Smaxin
+
+namespace SmaxinM1 {
+static constexpr AttributeId Id = 0xFFF1006A;
+} // namespace SmaxinM1
+
+namespace Ccasn {
+static constexpr AttributeId Id = 0xFFF1006B;
+} // namespace Ccasn
+
+namespace CcasnM1 {
+static constexpr AttributeId Id = 0xFFF1006C;
+} // namespace CcasnM1
+
+namespace Ccain {
+static constexpr AttributeId Id = 0xFFF1006D;
+} // namespace Ccain
+
+namespace CcainM1 {
+static constexpr AttributeId Id = 0xFFF1006E;
+} // namespace CcainM1
+
+namespace Dpm1 {
+static constexpr AttributeId Id = 0xFFF1006F;
+} // namespace Dpm1
+
+namespace Fpm1 {
+static constexpr AttributeId Id = 0xFFF10070;
+} // namespace Fpm1
+
+namespace Dpm2 {
+static constexpr AttributeId Id = 0xFFF10071;
+} // namespace Dpm2
+
+namespace Fpm2 {
+static constexpr AttributeId Id = 0xFFF10072;
+} // namespace Fpm2
+
+namespace Dpm3 {
+static constexpr AttributeId Id = 0xFFF10073;
+} // namespace Dpm3
+
+namespace Fpm3 {
+static constexpr AttributeId Id = 0xFFF10074;
+} // namespace Fpm3
+
+namespace GeneratedCommandList {
+static constexpr AttributeId Id = Globals::Attributes::GeneratedCommandList::Id;
+} // namespace GeneratedCommandList
+
+namespace AcceptedCommandList {
+static constexpr AttributeId Id = Globals::Attributes::AcceptedCommandList::Id;
+} // namespace AcceptedCommandList
+
+namespace EventList {
+static constexpr AttributeId Id = Globals::Attributes::EventList::Id;
+} // namespace EventList
+
+namespace AttributeList {
+static constexpr AttributeId Id = Globals::Attributes::AttributeList::Id;
+} // namespace AttributeList
+
+namespace FeatureMap {
+static constexpr AttributeId Id = Globals::Attributes::FeatureMap::Id;
+} // namespace FeatureMap
+
+namespace ClusterRevision {
+static constexpr AttributeId Id = Globals::Attributes::ClusterRevision::Id;
+} // namespace ClusterRevision
+
+} // namespace Attributes
+} // namespace EnedisTic
+
 namespace UnitTesting {
 namespace Attributes {
 

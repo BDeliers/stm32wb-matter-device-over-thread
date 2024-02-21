@@ -26126,6 +26126,981 @@ struct TypeInfo
 };
 } // namespace Attributes
 } // namespace ClientMonitoring
+namespace EnedisTic {
+
+namespace Attributes {
+
+namespace Adsc {
+struct TypeInfo
+{
+    using Type             = uint64_t;
+    using DecodableType    = uint64_t;
+    using DecodableArgType = uint64_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Adsc::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Adsc
+namespace Vtic {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Vtic::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Vtic
+namespace Prm {
+struct TypeInfo
+{
+    using Type             = uint64_t;
+    using DecodableType    = uint64_t;
+    using DecodableArgType = uint64_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Prm::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Prm
+namespace Relais {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Relais::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Relais
+namespace Stge {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Stge::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Stge
+namespace Ngtf {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ngtf::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 17; }
+};
+} // namespace Ngtf
+namespace Ltarf {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ltarf::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 17; }
+};
+} // namespace Ltarf
+namespace Pref {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Pref::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Pref
+namespace Pcoup {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Pcoup::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Pcoup
+namespace Ntarf {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ntarf::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Ntarf
+namespace Njourf {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Njourf::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Njourf
+namespace NjourfP1 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::NjourfP1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace NjourfP1
+namespace PjourfP1 {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::PjourfP1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 99; }
+};
+} // namespace PjourfP1
+namespace Ppointe {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ppointe::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 99; }
+};
+} // namespace Ppointe
+namespace Msg1 {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Msg1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 33; }
+};
+} // namespace Msg1
+namespace Msg2 {
+struct TypeInfo
+{
+    using Type             = chip::CharSpan;
+    using DecodableType    = chip::CharSpan;
+    using DecodableArgType = chip::CharSpan;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Msg2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+    static constexpr size_t MaxLength() { return 17; }
+};
+} // namespace Msg2
+namespace East {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::East::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace East
+namespace Easf01 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf01::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf01
+namespace Easf02 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf02::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf02
+namespace Easf03 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf03::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf03
+namespace Easf04 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf04::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf04
+namespace Easf05 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf05::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf05
+namespace Easf06 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf06::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf06
+namespace Easf07 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf07::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf07
+namespace Easf08 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf08::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf08
+namespace Easf09 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf09::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf09
+namespace Easf10 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easf10::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easf10
+namespace Easd01 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easd01::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easd01
+namespace Easd02 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easd02::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easd02
+namespace Easd03 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easd03::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easd03
+namespace Easd04 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Easd04::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Easd04
+namespace Eait {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Eait::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Eait
+namespace Erq1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Erq1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Erq1
+namespace Erq2 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Erq2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Erq2
+namespace Erq3 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Erq3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Erq3
+namespace Erq4 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Erq4::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Erq4
+namespace Irms1 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Irms1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Irms1
+namespace Irms2 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Irms2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Irms2
+namespace Irms3 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Irms3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Irms3
+namespace Urms1 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Urms1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Urms1
+namespace Urms2 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Urms2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Urms2
+namespace Urms3 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Urms3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Urms3
+namespace Sinsts {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Sinsts::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Sinsts
+namespace Sinsts1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Sinsts1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Sinsts1
+namespace Sinsts2 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Sinsts2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Sinsts2
+namespace Sinsts3 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Sinsts3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Sinsts3
+namespace Umoy1 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Umoy1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Umoy1
+namespace Umoy2 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Umoy2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Umoy2
+namespace Umoy3 {
+struct TypeInfo
+{
+    using Type             = uint16_t;
+    using DecodableType    = uint16_t;
+    using DecodableArgType = uint16_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Umoy3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Umoy3
+namespace Smaxsn {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn
+namespace Smaxsn1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn1
+namespace Smaxsn2 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn2
+namespace Smaxsn3 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn3
+namespace SmaxsnM1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::SmaxsnM1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace SmaxsnM1
+namespace Smaxsn1M1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn1M1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn1M1
+namespace Smaxsn2M1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn2M1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn2M1
+namespace Smaxsn3M1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxsn3M1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxsn3M1
+namespace Sinscti {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Sinscti::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Sinscti
+namespace Smaxin {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Smaxin::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Smaxin
+namespace SmaxinM1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::SmaxinM1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace SmaxinM1
+namespace Ccasn {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ccasn::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Ccasn
+namespace CcasnM1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::CcasnM1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace CcasnM1
+namespace Ccain {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Ccain::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Ccain
+namespace CcainM1 {
+struct TypeInfo
+{
+    using Type             = uint32_t;
+    using DecodableType    = uint32_t;
+    using DecodableArgType = uint32_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::CcainM1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace CcainM1
+namespace Dpm1 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Dpm1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Dpm1
+namespace Fpm1 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Fpm1::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Fpm1
+namespace Dpm2 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Dpm2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Dpm2
+namespace Fpm2 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Fpm2::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Fpm2
+namespace Dpm3 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Dpm3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Dpm3
+namespace Fpm3 {
+struct TypeInfo
+{
+    using Type             = uint8_t;
+    using DecodableType    = uint8_t;
+    using DecodableArgType = uint8_t;
+
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+    static constexpr AttributeId GetAttributeId() { return Attributes::Fpm3::Id; }
+    static constexpr bool MustUseTimedWrite() { return false; }
+};
+} // namespace Fpm3
+namespace GeneratedCommandList {
+struct TypeInfo : public Clusters::Globals::Attributes::GeneratedCommandList::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace GeneratedCommandList
+namespace AcceptedCommandList {
+struct TypeInfo : public Clusters::Globals::Attributes::AcceptedCommandList::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace AcceptedCommandList
+namespace EventList {
+struct TypeInfo : public Clusters::Globals::Attributes::EventList::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace EventList
+namespace AttributeList {
+struct TypeInfo : public Clusters::Globals::Attributes::AttributeList::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace AttributeList
+namespace FeatureMap {
+struct TypeInfo : public Clusters::Globals::Attributes::FeatureMap::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace FeatureMap
+namespace ClusterRevision {
+struct TypeInfo : public Clusters::Globals::Attributes::ClusterRevision::TypeInfo
+{
+    static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+};
+} // namespace ClusterRevision
+
+struct TypeInfo
+{
+    struct DecodableType
+    {
+        static constexpr ClusterId GetClusterId() { return Clusters::EnedisTic::Id; }
+
+        CHIP_ERROR Decode(TLV::TLVReader & reader, const ConcreteAttributePath & path);
+
+        Attributes::Adsc::TypeInfo::DecodableType adsc     = static_cast<uint64_t>(0);
+        Attributes::Vtic::TypeInfo::DecodableType vtic     = static_cast<uint8_t>(0);
+        Attributes::Prm::TypeInfo::DecodableType prm       = static_cast<uint64_t>(0);
+        Attributes::Relais::TypeInfo::DecodableType relais = static_cast<uint16_t>(0);
+        Attributes::Stge::TypeInfo::DecodableType stge     = static_cast<uint32_t>(0);
+        Attributes::Ngtf::TypeInfo::DecodableType ngtf;
+        Attributes::Ltarf::TypeInfo::DecodableType ltarf;
+        Attributes::Pref::TypeInfo::DecodableType pref         = static_cast<uint16_t>(0);
+        Attributes::Pcoup::TypeInfo::DecodableType pcoup       = static_cast<uint16_t>(0);
+        Attributes::Ntarf::TypeInfo::DecodableType ntarf       = static_cast<uint8_t>(0);
+        Attributes::Njourf::TypeInfo::DecodableType njourf     = static_cast<uint8_t>(0);
+        Attributes::NjourfP1::TypeInfo::DecodableType njourfP1 = static_cast<uint8_t>(0);
+        Attributes::PjourfP1::TypeInfo::DecodableType pjourfP1;
+        Attributes::Ppointe::TypeInfo::DecodableType ppointe;
+        Attributes::Msg1::TypeInfo::DecodableType msg1;
+        Attributes::Msg2::TypeInfo::DecodableType msg2;
+        Attributes::East::TypeInfo::DecodableType east           = static_cast<uint32_t>(0);
+        Attributes::Easf01::TypeInfo::DecodableType easf01       = static_cast<uint32_t>(0);
+        Attributes::Easf02::TypeInfo::DecodableType easf02       = static_cast<uint32_t>(0);
+        Attributes::Easf03::TypeInfo::DecodableType easf03       = static_cast<uint32_t>(0);
+        Attributes::Easf04::TypeInfo::DecodableType easf04       = static_cast<uint32_t>(0);
+        Attributes::Easf05::TypeInfo::DecodableType easf05       = static_cast<uint32_t>(0);
+        Attributes::Easf06::TypeInfo::DecodableType easf06       = static_cast<uint32_t>(0);
+        Attributes::Easf07::TypeInfo::DecodableType easf07       = static_cast<uint32_t>(0);
+        Attributes::Easf08::TypeInfo::DecodableType easf08       = static_cast<uint32_t>(0);
+        Attributes::Easf09::TypeInfo::DecodableType easf09       = static_cast<uint32_t>(0);
+        Attributes::Easf10::TypeInfo::DecodableType easf10       = static_cast<uint32_t>(0);
+        Attributes::Easd01::TypeInfo::DecodableType easd01       = static_cast<uint32_t>(0);
+        Attributes::Easd02::TypeInfo::DecodableType easd02       = static_cast<uint32_t>(0);
+        Attributes::Easd03::TypeInfo::DecodableType easd03       = static_cast<uint32_t>(0);
+        Attributes::Easd04::TypeInfo::DecodableType easd04       = static_cast<uint32_t>(0);
+        Attributes::Eait::TypeInfo::DecodableType eait           = static_cast<uint32_t>(0);
+        Attributes::Erq1::TypeInfo::DecodableType erq1           = static_cast<uint32_t>(0);
+        Attributes::Erq2::TypeInfo::DecodableType erq2           = static_cast<uint32_t>(0);
+        Attributes::Erq3::TypeInfo::DecodableType erq3           = static_cast<uint32_t>(0);
+        Attributes::Erq4::TypeInfo::DecodableType erq4           = static_cast<uint32_t>(0);
+        Attributes::Irms1::TypeInfo::DecodableType irms1         = static_cast<uint16_t>(0);
+        Attributes::Irms2::TypeInfo::DecodableType irms2         = static_cast<uint16_t>(0);
+        Attributes::Irms3::TypeInfo::DecodableType irms3         = static_cast<uint16_t>(0);
+        Attributes::Urms1::TypeInfo::DecodableType urms1         = static_cast<uint16_t>(0);
+        Attributes::Urms2::TypeInfo::DecodableType urms2         = static_cast<uint16_t>(0);
+        Attributes::Urms3::TypeInfo::DecodableType urms3         = static_cast<uint16_t>(0);
+        Attributes::Sinsts::TypeInfo::DecodableType sinsts       = static_cast<uint32_t>(0);
+        Attributes::Sinsts1::TypeInfo::DecodableType sinsts1     = static_cast<uint32_t>(0);
+        Attributes::Sinsts2::TypeInfo::DecodableType sinsts2     = static_cast<uint32_t>(0);
+        Attributes::Sinsts3::TypeInfo::DecodableType sinsts3     = static_cast<uint32_t>(0);
+        Attributes::Umoy1::TypeInfo::DecodableType umoy1         = static_cast<uint16_t>(0);
+        Attributes::Umoy2::TypeInfo::DecodableType umoy2         = static_cast<uint16_t>(0);
+        Attributes::Umoy3::TypeInfo::DecodableType umoy3         = static_cast<uint16_t>(0);
+        Attributes::Smaxsn::TypeInfo::DecodableType smaxsn       = static_cast<uint32_t>(0);
+        Attributes::Smaxsn1::TypeInfo::DecodableType smaxsn1     = static_cast<uint32_t>(0);
+        Attributes::Smaxsn2::TypeInfo::DecodableType smaxsn2     = static_cast<uint32_t>(0);
+        Attributes::Smaxsn3::TypeInfo::DecodableType smaxsn3     = static_cast<uint32_t>(0);
+        Attributes::SmaxsnM1::TypeInfo::DecodableType smaxsnM1   = static_cast<uint32_t>(0);
+        Attributes::Smaxsn1M1::TypeInfo::DecodableType smaxsn1M1 = static_cast<uint32_t>(0);
+        Attributes::Smaxsn2M1::TypeInfo::DecodableType smaxsn2M1 = static_cast<uint32_t>(0);
+        Attributes::Smaxsn3M1::TypeInfo::DecodableType smaxsn3M1 = static_cast<uint32_t>(0);
+        Attributes::Sinscti::TypeInfo::DecodableType sinscti     = static_cast<uint32_t>(0);
+        Attributes::Smaxin::TypeInfo::DecodableType smaxin       = static_cast<uint32_t>(0);
+        Attributes::SmaxinM1::TypeInfo::DecodableType smaxinM1   = static_cast<uint32_t>(0);
+        Attributes::Ccasn::TypeInfo::DecodableType ccasn         = static_cast<uint32_t>(0);
+        Attributes::CcasnM1::TypeInfo::DecodableType ccasnM1     = static_cast<uint32_t>(0);
+        Attributes::Ccain::TypeInfo::DecodableType ccain         = static_cast<uint32_t>(0);
+        Attributes::CcainM1::TypeInfo::DecodableType ccainM1     = static_cast<uint32_t>(0);
+        Attributes::Dpm1::TypeInfo::DecodableType dpm1           = static_cast<uint8_t>(0);
+        Attributes::Fpm1::TypeInfo::DecodableType fpm1           = static_cast<uint8_t>(0);
+        Attributes::Dpm2::TypeInfo::DecodableType dpm2           = static_cast<uint8_t>(0);
+        Attributes::Fpm2::TypeInfo::DecodableType fpm2           = static_cast<uint8_t>(0);
+        Attributes::Dpm3::TypeInfo::DecodableType dpm3           = static_cast<uint8_t>(0);
+        Attributes::Fpm3::TypeInfo::DecodableType fpm3           = static_cast<uint8_t>(0);
+        Attributes::GeneratedCommandList::TypeInfo::DecodableType generatedCommandList;
+        Attributes::AcceptedCommandList::TypeInfo::DecodableType acceptedCommandList;
+        Attributes::EventList::TypeInfo::DecodableType eventList;
+        Attributes::AttributeList::TypeInfo::DecodableType attributeList;
+        Attributes::FeatureMap::TypeInfo::DecodableType featureMap           = static_cast<uint32_t>(0);
+        Attributes::ClusterRevision::TypeInfo::DecodableType clusterRevision = static_cast<uint16_t>(0);
+    };
+};
+} // namespace Attributes
+} // namespace EnedisTic
 namespace UnitTesting {
 namespace Structs {
 namespace SimpleStruct {
