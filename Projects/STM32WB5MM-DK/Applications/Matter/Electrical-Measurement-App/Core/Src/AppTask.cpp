@@ -70,14 +70,15 @@ static QueueHandle_t    sAppEventQueue;
 static osMessageQId     sClusterUpdateQueue;
 TimerHandle_t           sPushButtonTimeoutTimer;
 TimerHandle_t           sDelayNvmTimer;
+TimerHandle_t           sDelayReceiveTimer;
 const osThreadAttr_t AppTask_attr = { 
-                                    .name = APPTASK_NAME,
-                                    .attr_bits = APP_ATTR_BITS,
-                                    .cb_mem = APP_CB_MEM,
-                                    .cb_size = APP_CB_SIZE,
-                                    .stack_mem = APP_STACK_MEM,
+                                    .name       = APPTASK_NAME,
+                                    .attr_bits  = APP_ATTR_BITS,
+                                    .cb_mem     = APP_CB_MEM,
+                                    .cb_size    = APP_CB_SIZE,
+                                    .stack_mem  = APP_STACK_MEM,
                                     .stack_size = APP_STACK_SIZE,
-                                    .priority = APP_PRIORITY
+                                    .priority   = APP_PRIORITY
                                 };
 
 static bool sIsThreadProvisioned    = false;
@@ -88,6 +89,8 @@ static bool sFailCommissioning      = false;
 static bool sHaveFabric             = false;
 static uint8_t NvmTimerCpt          = 0;
 static uint8_t NvmButtonStateCpt    = 0;
+
+extern bool display_detected;
 
 static const chip::AttributeId map_linky_to_matter[AppLinky::Field::Field_COUNT] = {
     EnedisTic::Attributes::Adsc::Id, EnedisTic::Attributes::Vtic::Id, kInvalidAttributeId, EnedisTic::Attributes::Ngtf::Id, 
@@ -169,6 +172,13 @@ CHIP_ERROR AppTask::Init() {
             DelayNvmHandler // timer callback handler
             );
 
+    sDelayReceiveTimer = xTimerCreate("Delay_LinkyRx",  // Just a text name, not used by the RTOS kernel
+            15000U,                                     // == default timer period (mS)
+            pdFALSE,                                    //  Timer reload
+            0,                                          // init timer
+            DelayReceiveTimerHandler                    // timer callback handler
+            );
+
     chip::DeviceLayer::ThreadStackMgr().InitThreadStack();
 
     chip::DeviceLayer::ConnectivityMgr().SetThreadDeviceType(chip::DeviceLayer::ConnectivityManager::kThreadDeviceType_Router);
@@ -212,11 +222,13 @@ CHIP_ERROR AppTask::Init() {
     {  // try to attach to the thread network
         uint8_t datasetBytes[Thread::kSizeOperationalDataset];
         size_t datasetLength = 0;
+        APP_BLE_Init_Dyn_3();
+
         //char Message[20];
         //snprintf(Message, sizeof(Message), "Fabric Found: %d", chip::Server::GetInstance().GetFabricTable().FabricCount());
-        APP_BLE_Init_Dyn_3();
         //UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) Message, LEFT_MODE);
         //BSP_LCD_Refresh(0);
+
         CHIP_ERROR error = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgr().Get(STM32ThreadDataSet, datasetBytes, sizeof(datasetBytes), &datasetLength);
 
         if (error == CHIP_NO_ERROR)
@@ -291,8 +303,9 @@ void AppTask::AppTaskMain(void *pvParameter)
             {
                 if (map_linky_to_matter[f] != chip::kInvalidAttributeId)
                 {
-                    if (!AppClusterMgr::GetInstance().UpdateMatterClusterU32(chip::app::Clusters::EnedisTic::Id,
-                                                        map_linky_to_matter[f], AppLinky::GetInstance().GetFieldU32(f)))
+                    AppLinky::DataObjectBase obj = AppLinky::GetInstance().GetField(f);
+                    if (!AppClusterMgr::GetInstance().UpdateMatterCluster(chip::app::Clusters::EnedisTic::Id,
+                                                        map_linky_to_matter[f], obj.GetDataPtr(), obj.GetSize()))
                     {
                         ChipLogError(NotSpecified, "Error setting a Matter attribute");
                     }
@@ -301,13 +314,54 @@ void AppTask::AppTaskMain(void *pvParameter)
                 // Show the instant consumption and current on the display
                 if (f == AppLinky::Field::SINSTS)
                 {
-                    UTIL_LCD_ClearStringLine(LINE(2));
-                    UTIL_LCD_ClearStringLine(LINE(3));
-                    snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Pow= %lu VA", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::SINSTS));
-                    UTIL_LCD_DisplayStringAt(0, LINE(2), (uint8_t*) str_disp_buffer, CENTER_MODE);
-                    snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Irms= %lu A", AppLinky::GetInstance().GetFieldU32(AppLinky::Field::IRMS1));
-                    UTIL_LCD_DisplayStringAt(0, LINE(3), (uint8_t*) str_disp_buffer, CENTER_MODE);
-                    BSP_LCD_Refresh(0);
+                    AppLinky::DataObjectBase obj;
+                    
+                    obj = AppLinky::GetInstance().GetField(AppLinky::Field::SINSTS);
+                    AppClusterMgr::GetInstance().UpdateMatterCluster(
+                                                        chip::app::Clusters::ElectricalMeasurement::Id,
+                                                        chip::app::Clusters::ElectricalMeasurement::Attributes::ApparentPower::Id, 
+                                                        obj.GetDataPtr(), obj.GetSize());
+
+                    if (display_detected)
+                    {
+                        snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Pow= %lu VA", *static_cast<const uint16_t*>(obj.GetDataPtr()));
+                        UTIL_LCD_ClearStringLine(LINE(2));
+                        UTIL_LCD_ClearStringLine(LINE(3));
+                        UTIL_LCD_DisplayStringAt(0, LINE(2), (uint8_t*) str_disp_buffer, CENTER_MODE);
+                    }
+                    
+                    obj = AppLinky::GetInstance().GetField(AppLinky::Field::IRMS1);
+                    AppClusterMgr::GetInstance().UpdateMatterCluster(
+                                    chip::app::Clusters::ElectricalMeasurement::Id,
+                                    chip::app::Clusters::ElectricalMeasurement::Attributes::RmsCurrent::Id, 
+                                    obj.GetDataPtr(), obj.GetSize());
+
+                    if (display_detected)
+                    {
+                        snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Irms= %lu A", *static_cast<const uint16_t*>(obj.GetDataPtr()));
+                        UTIL_LCD_DisplayStringAt(0, LINE(3), (uint8_t*) str_disp_buffer, CENTER_MODE);
+                        BSP_LCD_Refresh(0);
+                    }
+
+                    obj = AppLinky::GetInstance().GetField(AppLinky::Field::URMS1);
+                    AppClusterMgr::GetInstance().UpdateMatterCluster(
+                                    chip::app::Clusters::ElectricalMeasurement::Id,
+                                    chip::app::Clusters::ElectricalMeasurement::Attributes::RmsVoltage::Id, 
+                                    obj.GetDataPtr(), obj.GetSize());
+                    
+
+                    if (!AppClusterMgr::GetInstance().UpdateMatterCluster(chip::app::Clusters::EnedisTic::Id,
+                                                        map_linky_to_matter[f], obj.GetDataPtr(), obj.GetSize()))
+                    {
+                        ChipLogError(NotSpecified, "Error setting a Matter attribute");
+                    }
+                }
+
+                // Restart acquisition when all the new values have been processed
+                if (osMessageQueueGetCount(sClusterUpdateQueue) == 0)
+                {
+                    // Delay by 15 seconds
+                    xTimerStart(sDelayReceiveTimer, 0);
                 }
             }
         }
@@ -397,28 +451,42 @@ void AppTask::DelayNvmHandler(TimerHandle_t xTimer) {
     sAppTask.PostEvent(&event);
 }
 
-void AppTask::UpdateLCD(void) {
-    if (sIsThreadProvisioned && sIsThreadEnabled) {
-        UTIL_LCD_DisplayStringAt(0, LINE(4), (uint8_t*) "Network Joined", LEFT_MODE);
-    } else if ((sIsThreadProvisioned == false) || (sIsThreadEnabled == false)) {
-        UTIL_LCD_ClearStringLine(4);
-    }
-    if (sHaveBLEConnections) {
-        UTIL_LCD_ClearStringLine(1);
+void AppTask::DelayReceiveTimerHandler(TimerHandle_t xTimer) {
+    AppLinky::GetInstance().StartReceiving();
+}
+
+void AppTask::UpdateLCD(void)
+{
+    if (display_detected)
+    {
+        if (sIsThreadProvisioned && sIsThreadEnabled)
+        {
+            UTIL_LCD_DisplayStringAt(0, LINE(4), (uint8_t*) "Network Joined", LEFT_MODE);
+        } 
+        else if ((sIsThreadProvisioned == false) || (sIsThreadEnabled == false))
+        {
+            UTIL_LCD_ClearStringLine(4);
+        }
+        if (sHaveBLEConnections)
+        {
+            UTIL_LCD_ClearStringLine(1);
+            BSP_LCD_Refresh(0);
+            UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "BLE Connected", LEFT_MODE);
+        }
+        if (sHaveFabric)
+        {
+            UTIL_LCD_ClearStringLine(1);
+            BSP_LCD_Refresh(0);
+            UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "Fabric Created", LEFT_MODE);
+        }
+        if (sFailCommissioning == true)
+        {
+            UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "", LEFT_MODE);
+            BSP_LCD_Refresh(0);
+            UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "Fabric Failed", LEFT_MODE);
+        }
         BSP_LCD_Refresh(0);
-        UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "BLE Connected", LEFT_MODE);
     }
-    if (sHaveFabric) {
-        UTIL_LCD_ClearStringLine(1);
-        BSP_LCD_Refresh(0);
-        UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "Fabric Created", LEFT_MODE);
-    }
-    if (sFailCommissioning == true) {
-        UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "", LEFT_MODE);
-        BSP_LCD_Refresh(0);
-        UTIL_LCD_DisplayStringAt(0, LINE(1), (uint8_t*) "Fabric Failed", LEFT_MODE);
-    }
-    BSP_LCD_Refresh(0);
 }
 
 void AppTask::UpdateNvmEventHandler(AppEvent *aEvent) {

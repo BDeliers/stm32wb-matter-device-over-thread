@@ -87,11 +87,32 @@ public:
         Field_COUNT,
     };
 
-    enum Season : uint8_t {
-        WINTER,
-        SPRING,
-        SUMMER,
-        AUTUMN,
+    class DataObjectBase
+    {
+    public:
+        bool    IsString(void)       { return payload_is_string; }
+        uint8_t GetSize(void)        { return payload_size;      }
+        const void* GetDataPtr(void) { return payload_ptr;       };
+        bool SetData(void* data_ptr);
+        bool Equals(void* src);
+    protected:
+        uint8_t* payload_ptr        = nullptr;
+        uint8_t payload_size        = 0;
+        bool    payload_is_string   = false;
+    };
+
+    template <uint8_t size, bool is_string=false>
+    class DataObject : public DataObjectBase
+    {
+    public:
+        DataObject(void) 
+        {
+            payload_size = size;
+            payload_is_string = is_string;
+            payload_ptr = payload;
+        }
+    private:
+        uint8_t payload[size];
     };
 
     static AppLinky& GetInstance(void)
@@ -104,7 +125,7 @@ public:
     bool Init(osMessageQId feedback_queue);
     bool StartReceiving(void);
 
-    uint32_t GetFieldU32(Field field);
+    DataObjectBase& GetField(Field field);
 
     static void UartRxCallback(uint8_t byte);
 
@@ -123,19 +144,7 @@ private:
     bool ParseAndSaveDate(const char* data);
     Field StringToField(const char* str);
 
-    bool UpdateFieldU32(Field field, uint32_t val);
-    bool UpdateFieldSTR(Field field, char* str);
-
-    // Linky data
-    Season   season;
-    uint16_t year, month, day;
-    uint16_t hour, minute, second;
-
-    uint32_t linky_data[Field::Field_COUNT];
-    char     linky_address[13];
-    char     linky_calname[17];
-    char     linky_curprice[17];
-    char     linky_prm[15];
+    bool UpdateField(Field field, void* val_ptr);
 
 };
 

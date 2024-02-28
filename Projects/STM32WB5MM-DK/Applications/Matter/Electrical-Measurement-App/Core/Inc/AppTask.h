@@ -51,6 +51,7 @@ private:
        static void FunctionHandler(AppEvent * aEvent);
        static void TimerEventHandler(TimerHandle_t xTimer);
        static void DelayNvmHandler(TimerHandle_t xTimer);
+       static void DelayReceiveTimerHandler(TimerHandle_t xTimer);
        static void MatterEventHandler(const chip::DeviceLayer::ChipDeviceEvent * event, intptr_t arg);
        static void UpdateLCD(void);
        static void UpdateNvmEventHandler(AppEvent * aEvent);

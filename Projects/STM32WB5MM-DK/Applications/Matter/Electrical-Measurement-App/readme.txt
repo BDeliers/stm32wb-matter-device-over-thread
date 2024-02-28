@@ -67,7 +67,15 @@ COAP,THREAD,BLE,Matter
   - Matter/Electrical-Measurement-App/Core/Inc/mbedtls_user_config.h      MbedTLS specific defines
   - Matter/Electrical-Measurement-App/Core/Inc/CHIPProjectConfig.h        Matter specific defines
   - Matter/Electrical-Measurement-App/Core/Inc/AppEvent.h                 App event handler
-  - Matter/Electrical-Measurement-App/Core/Inc/AppTask.h                  Header for AppTask.cpp module
+
+  - Matter/Electrical-Measurement-App/Core/Src/AppLinky.c                 Linky meter communication handler
+  - Matter/Electrical-Measurement-App/Core/Src/AppClusterManager.c        Matter clusters setters
+  - Matter/Electrical-Measurement-App/Core/Src/app_uart.c                 UART link manager
+
+  - Middlewares/Third_Party/connectedhomeip/src/app/zap-templates/zcl/data-model/draft/enedis-tic-cluster.xml           Custom cluster descriptor for the Linky data
+  - Middlewares/Third_Party/connectedhomeip/src/cluster/electrical-measurement-app/electrical-measurement-app.zap       Application clusters descriptor
+  - Middlewares/Third_Party/connectedhomeip/src/cluster/electrical-measurement-app/zap-generated                        Generated files for the Matter application
+  - Middlewares/Third_Party/connectedhomeip/src/app-common/zap-generated                                                Re-generated Matter SDK with the custom cluster implementation
   
  
 @par Hardware and Software environment

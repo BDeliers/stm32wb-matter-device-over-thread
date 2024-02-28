@@ -184,7 +184,7 @@ extern "C" {
 #define APP_CB_SIZE     (0)
 #define APP_STACK_MEM   (0)
 #define APP_PRIORITY    osPriorityNormal
-#define APP_STACK_SIZE  (1024*6)
+#define APP_STACK_SIZE  (1024*8)
 
 /**
 *   Identity root key used to derive LTK and CSRK

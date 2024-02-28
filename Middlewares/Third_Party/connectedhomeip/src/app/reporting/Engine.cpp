@@ -182,8 +182,8 @@ CHIP_ERROR Engine::BuildSingleReportDataAttributeReportIBs(ReportDataMessage::Bu
             if (err != CHIP_NO_ERROR)
             {
                 ChipLogError(DataManagement,
-                             "Error retrieving data from clusterId: " ChipLogFormatMEI ", err = %" CHIP_ERROR_FORMAT,
-                             ChipLogValueMEI(pathForRetrieval.mClusterId), err.Format());
+                             "Error retrieving data from clusterId: " ChipLogFormatMEI " attributeId: " ChipLogFormatMEI " , err = %" CHIP_ERROR_FORMAT,
+                             ChipLogValueMEI(pathForRetrieval.mClusterId), ChipLogValueMEI(pathForRetrieval.mAttributeId), err.Format());
 
                 // If error is not CHIP_ERROR_BUFFER_TOO_SMALL and is not CHIP_ERROR_NO_MEMORY, rollback and encode status.
                 // Otherwise, if partial data allowed, save the encode state.

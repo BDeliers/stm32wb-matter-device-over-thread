@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "app_conf.h"
 #include "dbg_trace.h"
@@ -30,6 +31,81 @@ static const char* LABELS[AppLinky::Field::Field_COUNT] = {
     "SMAXIN", "SMAXIN-1", "CCASN", "CCASN-1", "CCAIN", "CCAIN-1", "UMOY1", "UMOY2", "UMOY3", "STGE", "DPM1", "FPM1", "DPM1", "FPM2", "DPM3", "FPM3",
     "MSG1", "MSG2", "PRM", "RELAIS", "NTARF", "NJOURF", "NJOURF+1", "PJOURF+1", "PPOINTE",
 };
+
+static AppLinky::DataObjectBase linky_data[AppLinky::Field::Field_COUNT] = {
+    AppLinky::DataObject<sizeof(uint64_t)>(),           // ADSC
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // VTIC
+    AppLinky::DataObject<sizeof(struct tm), false>(),   // DATE
+    AppLinky::DataObject<17, true>(),                   // NGTF
+    AppLinky::DataObject<17, true>(),                   // LTARF
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EAST
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF01
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF02
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF03
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF04
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF05
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF06
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF07
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF08
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF09
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASF10
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASD01
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASD02
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASD03
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EASD04
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // EAIT
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // ERQ1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // ERQ2
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // ERQ3
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // ERQ4
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // IRMS1
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // IRMS2
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // IRMS3
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // URMS1
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // URMS2
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // URMS3
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // PREF
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // PCOUP
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SINSTS
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SINSTS1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SINSTS2
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SINSTS3
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN2
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN3
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN1_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN2_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXSN3_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SINSCTI
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXIN
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // SMAXIN_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // CCASN
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // CCASN_M1
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // CCAIN
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // CCAIN_M1
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // UMOY1
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // UMOY2
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // UMOY3
+    AppLinky::DataObject<sizeof(uint32_t)>(),           // STGE
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // DPM1
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // FPM1
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // DPM2
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // FPM2
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // DPM3
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // FPM3
+    AppLinky::DataObject<33, true>(),                   // MSG1
+    AppLinky::DataObject<17, true>(),                   // MSG2
+    AppLinky::DataObject<sizeof(uint64_t)>(),           // PRM
+    AppLinky::DataObject<sizeof(uint16_t)>(),           // RELAIS
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // NTARF
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // NJOURF
+    AppLinky::DataObject<sizeof(uint8_t)>(),            // NJOURF_P1
+    AppLinky::DataObject<99, true>(),                   // PJOURF_P1
+    AppLinky::DataObject<99, true>(),                   // PPOINTE
+};
+
 static uint8_t MAX_LABEL_LEN = 12;
 
 bool AppLinky::Init(osMessageQId feedback_queue)
@@ -46,12 +122,6 @@ bool AppLinky::Init(osMessageQId feedback_queue)
     queue_data_update = feedback_queue;
 
     AppUart_InitExternal(UartRxCallback);
-    
-    memset(linky_data,      0, sizeof(linky_data));
-    memset(linky_address,   0, sizeof(linky_address));
-    memset(linky_calname,   0, sizeof(linky_calname));
-    memset(linky_curprice,  0, sizeof(linky_curprice));
-    memset(linky_prm,       0, sizeof(linky_prm));
 
     return true;
 }
@@ -116,7 +186,7 @@ void AppLinky::Handler(void* arg)
 
 
             // Restart RX procedure
-            this_ptr->StartReceiving();
+            //this_ptr->StartReceiving();
         }
 
         // Don't block !
@@ -139,14 +209,9 @@ bool AppLinky::StartReceiving(void)
     return true;
 }
 
-uint32_t AppLinky::GetFieldU32(Field field)
+AppLinky::DataObjectBase& AppLinky::GetField(Field field)
 {
-    if (field < Field::Field_COUNT)
-    {
-        return linky_data[field];
-    }
-
-    return 0;
+    return linky_data[field];
 }
 
 void AppLinky::UartRxCallback(uint8_t byte)
@@ -240,39 +305,39 @@ bool AppLinky::ProcessLine(char* start, char* end)
         }
         *(checksum_start-1) = 0;
 
-
         switch (field)
         {
-        case ADSC:
         case NGTF:
         case LTARF:
-        case PRM:
-        {
-            UpdateFieldSTR(field, data_start);
-            break;
-        }
-        case STGE:
-        {
-            UpdateFieldU32(field, strtoul(data_start, NULL, 16));
-            break;
-        }
-        // Discarded
-        case DATE:
-        case DPM1:
-        case FPM1:
-        case DPM2:
-        case FPM2:
-        case DPM3:
-        case FPM3:
         case MSG1:
         case MSG2:
         case PJOURF_P1:
         case PPOINTE:
+        {
+            UpdateField(field, data_start);
+            break;
+        }
+        case STGE:
+        {
+            uint32_t tmp = strtoul(data_start, NULL, 16);
+            UpdateField(field, &tmp);
+            break;
+        }
+        case ADSC:
+        case PRM:
+        {
+            uint64_t tmp = strtoull(data_start, NULL, 10);
+            UpdateField(field, &tmp);
+            break;
+        }
+        // Discarded
+        case DATE:
             break;
 
         default:
         {
-            UpdateFieldU32(field, strtoul(data_start, NULL, 10));
+            uint32_t tmp = strtoul(data_start, NULL, 10);
+            UpdateField(field, &tmp);
             break;
         }
         }
@@ -291,28 +356,16 @@ bool AppLinky::ParseAndSaveDate(const char* data)
         return false;
     }
 
-    switch(data[0])
-    {
-    case 'P':
-        season = Season::SPRING;
-        break;
-    case 'E':
-        season = Season::SUMMER;
-        break;
-    case 'A':
-        season = Season::AUTUMN;
-        break;
-    default:
-        season = Season::WINTER;
-        break;
-    }
+    struct tm struct_time = {
+        .tm_sec  = static_cast<int>(strtoul_len(data + 11, 2)),
+        .tm_min  = static_cast<int>(strtoul_len(data + 9, 2)),
+        .tm_hour = static_cast<int>(strtoul_len(data + 7, 2)),
+        .tm_mday = static_cast<int>(strtoul_len(data + 5, 2)),
+        .tm_mon  = static_cast<int>(strtoul_len(data + 3, 2)),
+        .tm_year = static_cast<int>(strtoul_len(data + 1, 2) - 1900),
+    };
 
-    year   = strtoul_len(data + 1, 2);
-    month  = strtoul_len(data + 3, 2);
-    day    = strtoul_len(data + 5, 2);
-    hour   = strtoul_len(data + 7, 2);
-    minute = strtoul_len(data + 9, 2);
-    second = strtoul_len(data + 11, 2);
+    UpdateField(Field::DATE, &struct_time);
 
     return true;
 }
@@ -330,14 +383,15 @@ AppLinky::Field AppLinky::StringToField(const char* str)
     return Field_COUNT;
 }
 
-bool AppLinky::UpdateFieldU32(Field field, uint32_t val)
+bool AppLinky::UpdateField(Field field, void* val_ptr)
 {
-    if (field < Field::Field_COUNT)
+    if ((field < Field::Field_COUNT) && (val_ptr != nullptr))
     {
-        // Copy the new value to the array and update the app about the change
-        if (linky_data[field] != val)
+        DataObjectBase& obj = linky_data[field];
+
+        if (!obj.Equals(val_ptr)
+            && obj.SetData(val_ptr))
         {
-            linky_data[field] = val;
             osMessageQueuePut(queue_data_update, &field, 0, 0);
         }
         return true;
@@ -346,48 +400,35 @@ bool AppLinky::UpdateFieldU32(Field field, uint32_t val)
     return false;
 }
 
-bool AppLinky::UpdateFieldSTR(Field field, char* str)
+bool AppLinky::DataObjectBase::SetData(void* data_ptr)
 {
-    if ((field < Field::Field_COUNT) && (str != NULL))
-    {
-        char* dest = NULL;
-        switch (field)
-        {
-        case ADSC:
-        {
-            dest = linky_address;
-            break;
-        }
-        case NGTF:
-        {
-            dest = linky_calname;
-            break;
-        }
-        case LTARF:
-        {
-            dest = linky_curprice;
-            break;
-        }
-        case PRM:
-        {
-            dest = linky_prm;
-            break;
-        }
-        default:
-            break;
-        }
+    if (data_ptr == nullptr) { return false; }
 
-        if (dest != NULL)
-        {
-            if (strcmp(dest, str) != 0)
-            {
-                strcpy(dest, str);
-                strtrim(dest, ASCII_SPACE);
-                osMessageQueuePut(queue_data_update, &field, 0, 0);
-            }
-            return true;
-        }
+    if (payload_is_string)
+    {
+        strcpy(reinterpret_cast<char*>(payload_ptr), static_cast<const char*>(data_ptr));
+        strtrim(reinterpret_cast<char*>(payload_ptr), ASCII_SPACE);
+    }
+    else
+    {
+        memcpy(payload_ptr, data_ptr, payload_size);
     }
 
-    return false;
+    return true;
+}
+
+bool AppLinky::DataObjectBase::Equals(void* src)
+{
+    if (src == nullptr) { return false; }
+
+    if (payload_is_string)
+    {
+        return (strcmp(reinterpret_cast<char*>(payload_ptr), static_cast<const char*>(src)) == 0);
+    }
+    else
+    {
+        return (memcmp(payload_ptr, src, payload_size) == 0);
+    }
+
+    return true;
 }

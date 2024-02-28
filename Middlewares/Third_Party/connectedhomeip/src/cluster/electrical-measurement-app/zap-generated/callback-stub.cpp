@@ -47,6 +47,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ElectricalMeasurement::Id:
         emberAfElectricalMeasurementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::EnedisTic::Id:
+        emberAfEnedisTicClusterInitCallback(endpoint);
+        break;
     case app::Clusters::FixedLabel::Id:
         emberAfFixedLabelClusterInitCallback(endpoint);
         break;
@@ -121,6 +124,11 @@ void __attribute__((weak)) emberAfDiagnosticLogsClusterInitCallback(EndpointId e
     (void) endpoint;
 }
 void __attribute__((weak)) emberAfElectricalMeasurementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfEnedisTicClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
     (void) endpoint;

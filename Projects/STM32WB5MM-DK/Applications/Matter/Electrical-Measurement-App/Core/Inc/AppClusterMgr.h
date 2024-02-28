@@ -18,7 +18,7 @@ public:
 
     void Init(void);
 
-    bool UpdateMatterClusterU32(chip::ClusterId cluster, chip::AttributeId attribute, uint32_t val);
+    bool UpdateMatterCluster(chip::ClusterId cluster, chip::AttributeId attribute, const void* val_ptr, uint8_t val_size);
 
 private:
     static const chip::EndpointId ep_id = 1;

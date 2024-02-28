@@ -100,6 +100,8 @@ const osThreadAttr_t PushButtonProcess_attr = { .name = CFG_PUSH_BUTTON_EVT_PROC
         .priority =
         CFG_PUSH_BUTTON_EVT_PROCESS_PRIORITY };
 
+bool display_detected = false;
+
 /* USER CODE END GFP */
 
 /* Private functions prototypes-----------------------------------------------*/
@@ -163,21 +165,25 @@ void APPE_Init(void) {
     /* Initialize all transport layers and start CPU2 which will send back a ready event to CPU1 */
     appe_Tl_Init();
 
-    BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE);
-    /* Set LCD Foreground Layer  */
-    UTIL_LCD_SetFuncDriver(&LCD_Driver); /* SetFunc before setting device */
-    UTIL_LCD_SetDevice(0); /* SetDevice after funcDriver is set */
-    BSP_LCD_Clear(0, SSD1315_COLOR_BLACK);
-    BSP_LCD_DisplayOn(0);
-    BSP_LCD_Refresh(0);
-    UTIL_LCD_SetFont(&Font12);
-    /* Set the LCD Text Color */
-    UTIL_LCD_SetTextColor(SSD1315_COLOR_WHITE);
-    UTIL_LCD_SetBackColor(SSD1315_COLOR_BLACK);
-    BSP_LCD_Clear(0, SSD1315_COLOR_BLACK);
-    BSP_LCD_Refresh(0);
-    UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Linky over Matter", CENTER_MODE);
-    BSP_LCD_Refresh(0);
+    display_detected = (BSP_LCD_Init(0, LCD_ORIENTATION_LANDSCAPE) == BSP_ERROR_NONE);
+
+    if (display_detected)
+    {
+        /* Set LCD Foreground Layer  */
+        UTIL_LCD_SetFuncDriver(&LCD_Driver); /* SetFunc before setting device */
+        UTIL_LCD_SetDevice(0); /* SetDevice after funcDriver is set */
+        BSP_LCD_Clear(0, SSD1315_COLOR_BLACK);
+        BSP_LCD_DisplayOn(0);
+        BSP_LCD_Refresh(0);
+        UTIL_LCD_SetFont(&Font12);
+        /* Set the LCD Text Color */
+        UTIL_LCD_SetTextColor(SSD1315_COLOR_WHITE);
+        UTIL_LCD_SetBackColor(SSD1315_COLOR_BLACK);
+        BSP_LCD_Clear(0, SSD1315_COLOR_BLACK);
+        BSP_LCD_Refresh(0);
+        UTIL_LCD_DisplayStringAt(0, 0, (uint8_t*) "Linky over Matter", CENTER_MODE);
+        BSP_LCD_Refresh(0);
+    }
 
     /**
      * From now, the application is waiting for the ready event ( VS_HCI_C2_Ready )
