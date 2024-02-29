@@ -593,6 +593,14 @@ void emberAfElectricalMeasurementClusterInitCallback(chip::EndpointId endpoint);
  */
 void emberAfClientMonitoringClusterInitCallback(chip::EndpointId endpoint);
 
+/** @brief Enedis TIC Cluster Init
+ *
+ * Cluster Init
+ *
+ * @param endpoint    Endpoint that is being initialized
+ */
+void emberAfEnedisTicClusterInitCallback(chip::EndpointId endpoint);
+
 /** @brief Unit Testing Cluster Init
  *
  * Cluster Init
@@ -6014,6 +6022,84 @@ void emberAfClientMonitoringClusterServerTickCallback(chip::EndpointId endpoint)
  * @param endpoint  Endpoint that is being served
  */
 void emberAfClientMonitoringClusterClientTickCallback(chip::EndpointId endpoint);
+
+//
+// Enedis TIC Cluster
+//
+
+/** @brief Enedis TIC Cluster Server Init
+ *
+ * Server Init
+ *
+ * @param endpoint    Endpoint that is being initialized
+ */
+void emberAfEnedisTicClusterServerInitCallback(chip::EndpointId endpoint);
+
+/** @brief Enedis TIC Cluster Server Shutdown
+ *
+ * Server Shutdown
+ *
+ * @param endpoint    Endpoint that is being shutdown
+ */
+void MatterEnedisTicClusterServerShutdownCallback(chip::EndpointId endpoint);
+
+/** @brief Enedis TIC Cluster Client Init
+ *
+ * Client Init
+ *
+ * @param endpoint    Endpoint that is being initialized
+ */
+void emberAfEnedisTicClusterClientInitCallback(chip::EndpointId endpoint);
+
+/** @brief Enedis TIC Cluster Server Attribute Changed
+ *
+ * Server Attribute Changed
+ *
+ * @param attributePath Concrete attribute path that changed
+ */
+void MatterEnedisTicClusterServerAttributeChangedCallback(const chip::app::ConcreteAttributePath & attributePath);
+
+/** @brief Enedis TIC Cluster Server Pre Attribute Changed
+ *
+ * Server Pre Attribute Changed
+ *
+ * @param attributePath Concrete attribute path to be changed
+ * @param attributeType Attribute type
+ * @param size          Attribute size
+ * @param value         Attribute value
+ */
+chip::Protocols::InteractionModel::Status
+MatterEnedisTicClusterServerPreAttributeChangedCallback(const chip::app::ConcreteAttributePath & attributePath,
+                                                        EmberAfAttributeType attributeType, uint16_t size, uint8_t * value);
+
+/** @brief Enedis TIC Cluster Client Pre Attribute Changed
+ *
+ * Client Pre Attribute Changed
+ *
+ * @param attributePath Concrete attribute path to be changed
+ * @param attributeType Attribute type
+ * @param size          Attribute size
+ * @param value         Attribute value
+ */
+chip::Protocols::InteractionModel::Status
+MatterEnedisTicClusterClientPreAttributeChangedCallback(const chip::app::ConcreteAttributePath & attributePath,
+                                                        EmberAfAttributeType attributeType, uint16_t size, uint8_t * value);
+
+/** @brief Enedis TIC Cluster Server Tick
+ *
+ * Server Tick
+ *
+ * @param endpoint  Endpoint that is being served
+ */
+void emberAfEnedisTicClusterServerTickCallback(chip::EndpointId endpoint);
+
+/** @brief Enedis TIC Cluster Client Tick
+ *
+ * Client Tick
+ *
+ * @param endpoint  Endpoint that is being served
+ */
+void emberAfEnedisTicClusterClientTickCallback(chip::EndpointId endpoint);
 
 //
 // Unit Testing Cluster

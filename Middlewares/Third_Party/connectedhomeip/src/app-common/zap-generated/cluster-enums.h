@@ -2891,6 +2891,8 @@ namespace ElectricalMeasurement {} // namespace ElectricalMeasurement
 
 namespace ClientMonitoring {} // namespace ClientMonitoring
 
+namespace EnedisTic {} // namespace EnedisTic
+
 namespace UnitTesting {
 
 // Enum for SimpleEnum

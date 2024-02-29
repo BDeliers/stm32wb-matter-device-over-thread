@@ -1,0 +1,8 @@
+.vscode/
+
+**/STM32CubeIDE/.settings/
+**/STM32CubeIDE/Debug/
+**/STM32CubeIDE/Release/
+
+*.zap~
+*.dep

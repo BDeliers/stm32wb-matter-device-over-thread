@@ -19025,6 +19025,254 @@ CHIP_ERROR TypeInfo::DecodableType::Decode(TLV::TLVReader & reader, const Concre
 namespace Events {} // namespace Events
 
 } // namespace ClientMonitoring
+namespace EnedisTic {
+
+namespace Commands {} // namespace Commands
+
+namespace Attributes {
+CHIP_ERROR TypeInfo::DecodableType::Decode(TLV::TLVReader & reader, const ConcreteAttributePath & path)
+{
+    switch (path.mAttributeId)
+    {
+    case Attributes::Adsc::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, adsc));
+        break;
+    case Attributes::Vtic::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, vtic));
+        break;
+    case Attributes::Prm::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, prm));
+        break;
+    case Attributes::Relais::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, relais));
+        break;
+    case Attributes::Stge::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, stge));
+        break;
+    case Attributes::Ngtf::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ngtf));
+        break;
+    case Attributes::Ltarf::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ltarf));
+        break;
+    case Attributes::Pref::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, pref));
+        break;
+    case Attributes::Pcoup::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, pcoup));
+        break;
+    case Attributes::Ntarf::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ntarf));
+        break;
+    case Attributes::Njourf::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, njourf));
+        break;
+    case Attributes::NjourfP1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, njourfP1));
+        break;
+    case Attributes::PjourfP1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, pjourfP1));
+        break;
+    case Attributes::Ppointe::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ppointe));
+        break;
+    case Attributes::Msg1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, msg1));
+        break;
+    case Attributes::Msg2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, msg2));
+        break;
+    case Attributes::East::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, east));
+        break;
+    case Attributes::Easf01::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf01));
+        break;
+    case Attributes::Easf02::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf02));
+        break;
+    case Attributes::Easf03::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf03));
+        break;
+    case Attributes::Easf04::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf04));
+        break;
+    case Attributes::Easf05::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf05));
+        break;
+    case Attributes::Easf06::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf06));
+        break;
+    case Attributes::Easf07::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf07));
+        break;
+    case Attributes::Easf08::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf08));
+        break;
+    case Attributes::Easf09::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf09));
+        break;
+    case Attributes::Easf10::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easf10));
+        break;
+    case Attributes::Easd01::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easd01));
+        break;
+    case Attributes::Easd02::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easd02));
+        break;
+    case Attributes::Easd03::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easd03));
+        break;
+    case Attributes::Easd04::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, easd04));
+        break;
+    case Attributes::Eait::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, eait));
+        break;
+    case Attributes::Erq1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, erq1));
+        break;
+    case Attributes::Erq2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, erq2));
+        break;
+    case Attributes::Erq3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, erq3));
+        break;
+    case Attributes::Erq4::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, erq4));
+        break;
+    case Attributes::Irms1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, irms1));
+        break;
+    case Attributes::Irms2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, irms2));
+        break;
+    case Attributes::Irms3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, irms3));
+        break;
+    case Attributes::Urms1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, urms1));
+        break;
+    case Attributes::Urms2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, urms2));
+        break;
+    case Attributes::Urms3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, urms3));
+        break;
+    case Attributes::Sinsts::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, sinsts));
+        break;
+    case Attributes::Sinsts1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, sinsts1));
+        break;
+    case Attributes::Sinsts2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, sinsts2));
+        break;
+    case Attributes::Sinsts3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, sinsts3));
+        break;
+    case Attributes::Umoy1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, umoy1));
+        break;
+    case Attributes::Umoy2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, umoy2));
+        break;
+    case Attributes::Umoy3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, umoy3));
+        break;
+    case Attributes::Smaxsn::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn));
+        break;
+    case Attributes::Smaxsn1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn1));
+        break;
+    case Attributes::Smaxsn2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn2));
+        break;
+    case Attributes::Smaxsn3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn3));
+        break;
+    case Attributes::SmaxsnM1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsnM1));
+        break;
+    case Attributes::Smaxsn1M1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn1M1));
+        break;
+    case Attributes::Smaxsn2M1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn2M1));
+        break;
+    case Attributes::Smaxsn3M1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxsn3M1));
+        break;
+    case Attributes::Sinscti::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, sinscti));
+        break;
+    case Attributes::Smaxin::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxin));
+        break;
+    case Attributes::SmaxinM1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, smaxinM1));
+        break;
+    case Attributes::Ccasn::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ccasn));
+        break;
+    case Attributes::CcasnM1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ccasnM1));
+        break;
+    case Attributes::Ccain::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ccain));
+        break;
+    case Attributes::CcainM1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, ccainM1));
+        break;
+    case Attributes::Dpm1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, dpm1));
+        break;
+    case Attributes::Fpm1::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, fpm1));
+        break;
+    case Attributes::Dpm2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, dpm2));
+        break;
+    case Attributes::Fpm2::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, fpm2));
+        break;
+    case Attributes::Dpm3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, dpm3));
+        break;
+    case Attributes::Fpm3::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, fpm3));
+        break;
+    case Attributes::GeneratedCommandList::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, generatedCommandList));
+        break;
+    case Attributes::AcceptedCommandList::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, acceptedCommandList));
+        break;
+    case Attributes::EventList::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, eventList));
+        break;
+    case Attributes::AttributeList::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, attributeList));
+        break;
+    case Attributes::FeatureMap::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, featureMap));
+        break;
+    case Attributes::ClusterRevision::TypeInfo::GetAttributeId():
+        ReturnErrorOnFailure(DataModel::Decode(reader, clusterRevision));
+        break;
+    default:
+        break;
+    }
+
+    return CHIP_NO_ERROR;
+}
+} // namespace Attributes
+
+namespace Events {} // namespace Events
+
+} // namespace EnedisTic
 namespace UnitTesting {
 namespace Structs {
 namespace SimpleStruct {

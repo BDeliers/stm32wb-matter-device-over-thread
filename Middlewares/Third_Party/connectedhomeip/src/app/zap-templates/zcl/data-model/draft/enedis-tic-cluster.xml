@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) 2024 BDeliers
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<configurator>
+  <domain name="Home Automation"/>
+
+  <cluster manufacturerCode="0xFFF1" >
+    <name>Enedis TIC</name>
+    <domain>Home Automation</domain>
+    <description>Attributes related to the Téléinformation Client (TIC) provided by the ENEDIS counters</description>
+    <code>0xFCBD</code>
+    <define>ENEDIS_TIC_CLUSTER</define>
+
+    <client init="false" tick="false">true</client>
+    <server init="false" tick="false">true</server>
+  
+    <!--  Attributs "compteur"  -->
+    <attribute side="server" code="0x000" define="ADSC" type="INT64U" min="0" max="0xFFFFFFFFFFFFFFFF" writable="false" default="0xFFFFFFFFFFFFFFFF" optional="true">ADSC</attribute>
+    <attribute side="server" code="0x001" define="VTIC" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">VTIC</attribute>
+    <attribute side="server" code="0x002" define="PRM" type="INT64U" min="0" max="0xFFFFFFFFFFFFFFFF" writable="false" default="0xFFFFFFFFFFFFFFFF" optional="true">PRM</attribute>
+    <attribute side="server" code="0x003" define="RELAIS" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">RELAIS</attribute>
+    <attribute side="server" code="0x004" define="STGE" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">STGE</attribute>
+    
+    <!--  Attributs "abonnement"  -->
+    <attribute side="server" code="0x010" define="NGTF" type="CHAR_STRING"  length="17" writable="false" default="" optional="true">NGTF</attribute>
+    <attribute side="server" code="0x011" define="LTARF" type="CHAR_STRING"  length="17" writable="false" default="" optional="true">LTARF</attribute>
+    <attribute side="server" code="0x012" define="PREF" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">PREF</attribute>
+    <attribute side="server" code="0x013" define="PCOUP" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">PCOUP</attribute>
+    <attribute side="server" code="0x014" define="NTARF" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">NTARF</attribute>
+    <attribute side="server" code="0x015" define="NJOURF" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">NJOURF</attribute>
+    <attribute side="server" code="0x016" define="NJOURF_P1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">NJOURF_P1</attribute>
+    <attribute side="server" code="0x017" define="PJOURF_P1" type="CHAR_STRING" length="99" writable="false" default="" optional="true">PJOURF_P1</attribute>
+    <attribute side="server" code="0x018" define="PPOINTE" type="CHAR_STRING" length="99" writable="false" default="" optional="true">PPOINTE</attribute>
+    <attribute side="server" code="0x019" define="MSG1" type="CHAR_STRING" length="33" writable="false" default="" optional="true">MSG1</attribute>
+    <attribute side="server" code="0x01A" define="MSG2" type="CHAR_STRING" length="17" writable="false" default="" optional="true">MSG2</attribute>
+
+    <!--  Attributs "energie"  -->
+    <attribute side="server" code="0x030" define="EAST" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EAST</attribute>
+    <attribute side="server" code="0x031" define="EASF01" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF01</attribute>
+    <attribute side="server" code="0x032" define="EASF02" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF02</attribute>
+    <attribute side="server" code="0x033" define="EASF03" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF03</attribute>
+    <attribute side="server" code="0x034" define="EASF04" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF04</attribute>
+    <attribute side="server" code="0x035" define="EASF05" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF05</attribute>
+    <attribute side="server" code="0x036" define="EASF06" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF06</attribute>
+    <attribute side="server" code="0x037" define="EASF07" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF07</attribute>
+    <attribute side="server" code="0x038" define="EASF08" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF08</attribute>
+    <attribute side="server" code="0x039" define="EASF09" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF09</attribute>
+    <attribute side="server" code="0x03A" define="EASF10" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASF10</attribute>
+    <attribute side="server" code="0x03B" define="EASD01" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASD01</attribute>
+    <attribute side="server" code="0x03C" define="EASD02" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASD02</attribute>
+    <attribute side="server" code="0x03D" define="EASD03" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASD03</attribute>
+    <attribute side="server" code="0x03E" define="EASD04" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EASD04</attribute>
+    <attribute side="server" code="0x03F" define="EAIT" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">EAIT</attribute>
+    <attribute side="server" code="0x040" define="ERQ1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">ERQ1</attribute>
+    <attribute side="server" code="0x041" define="ERQ2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">ERQ2</attribute>
+    <attribute side="server" code="0x042" define="ERQ3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">ERQ3</attribute>
+    <attribute side="server" code="0x043" define="ERQ4" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">ERQ4</attribute>
+    
+    <!--  Attributs "instantané"  -->
+    <attribute side="server" code="0x050" define="IRMS1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">IRMS1</attribute>
+    <attribute side="server" code="0x051" define="IRMS2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">IRMS2</attribute>
+    <attribute side="server" code="0x052" define="IRMS3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">IRMS3</attribute>
+    <attribute side="server" code="0x053" define="URMS1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">URMS1</attribute>
+    <attribute side="server" code="0x054" define="URMS2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">URMS2</attribute>
+    <attribute side="server" code="0x055" define="URMS3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">URMS3</attribute>
+    <attribute side="server" code="0x056" define="SINSTS" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SINSTS</attribute>
+    <attribute side="server" code="0x057" define="SINSTS1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SINSTS1</attribute>
+    <attribute side="server" code="0x058" define="SINSTS2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SINSTS2</attribute>
+    <attribute side="server" code="0x059" define="SINSTS3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SINSTS3</attribute>
+    <attribute side="server" code="0x05A" define="UMOY1" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">UMOY1</attribute>
+    <attribute side="server" code="0x05B" define="UMOY2" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">UMOY2</attribute>
+    <attribute side="server" code="0x05C" define="UMOY3" type="INT16U" min="0" max="0xFFFF" writable="false" default="0xFFFF" optional="true">UMOY3</attribute>
+    
+    <!--  Attributs "extremum"  -->
+    <attribute side="server" code="0x060" define="SMAXSN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN</attribute>
+    <attribute side="server" code="0x061" define="SMAXSN1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN1</attribute>
+    <attribute side="server" code="0x062" define="SMAXSN2" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN2</attribute>
+    <attribute side="server" code="0x063" define="SMAXSN3" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN3</attribute>
+    <attribute side="server" code="0x064" define="SMAXSN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN_M1</attribute>
+    <attribute side="server" code="0x065" define="SMAXSN1_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN1_M1</attribute>
+    <attribute side="server" code="0x066" define="SMAXSN2_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN2_M1</attribute>
+    <attribute side="server" code="0x067" define="SMAXSN3_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXSN3_M1</attribute>
+    <attribute side="server" code="0x068" define="SINSCTI" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SINSCTI</attribute>
+    <attribute side="server" code="0x069" define="SMAXIN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXIN</attribute>
+    <attribute side="server" code="0x06A" define="SMAXIN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">SMAXIN_M1</attribute>
+    <attribute side="server" code="0x06B" define="CCASN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">CCASN</attribute>
+    <attribute side="server" code="0x06C" define="CCASN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">CCASN_M1</attribute>
+    <attribute side="server" code="0x06D" define="CCAIN" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">CCAIN</attribute>
+    <attribute side="server" code="0x06E" define="CCAIN_M1" type="INT32U" min="0" max="0xFFFFFFFF" writable="false" default="0xFFFFFFFF" optional="true">CCAIN_M1</attribute>
+    <attribute side="server" code="0x06F" define="DPM1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">DPM1</attribute>
+    <attribute side="server" code="0x070" define="FPM1" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">FPM1</attribute>
+    <attribute side="server" code="0x071" define="DPM2" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">DPM2</attribute>
+    <attribute side="server" code="0x072" define="FPM2" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">FPM2</attribute>
+    <attribute side="server" code="0x073" define="DPM3" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">DPM3</attribute>
+    <attribute side="server" code="0x074" define="FPM3" type="INT8U" min="0" max="0xFF" writable="false" default="0xFF" optional="true">FPM3</attribute>
+  </cluster>
+</configurator>

@@ -1,5 +1,17 @@
 # STM32WB Matter Device Over Thread MCU Firmware Package
 
+**BDeliers, February 2024**
+
+I forked the original repository of STMicroelectronics to adapt my own application. You'll find it in `Projects/STM32WB5MM-DK/Applications/Matter/Electrical-Measurement-App`.
+
+My application is intended to be connected to a french Linky power meter and retrieve data from it. This data is streamed with Matter over Thread, through a custom cluster I created.
+
+This was maide as part an [Elektor magazine contest](https://www.elektormagazine.com/st-contest).
+
+You can find more information about this on my webside [BDeliers.com](https://www.bdeliers.com)
+
+# Original README 
+
 ![latest tag](https://img.shields.io/github/v/tag/stm32-hotspot/stm32wb-matter-device-over-thread.svg?color=brightgreen)
 
 ## Overview

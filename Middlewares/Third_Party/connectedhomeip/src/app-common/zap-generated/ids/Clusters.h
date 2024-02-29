@@ -235,6 +235,9 @@ static constexpr ClusterId Id = 0x00000B04;
 namespace ClientMonitoring {
 static constexpr ClusterId Id = 0x00001046;
 } // namespace ClientMonitoring
+namespace EnedisTic {
+static constexpr ClusterId Id = 0xFFF1FCBD;
+} // namespace EnedisTic
 namespace UnitTesting {
 static constexpr ClusterId Id = 0xFFF1FC05;
 } // namespace UnitTesting
