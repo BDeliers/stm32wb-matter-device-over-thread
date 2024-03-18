@@ -95,7 +95,7 @@
 
 
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 215
+#define GENERATED_ATTRIBUTE_COUNT 216
 #define GENERATED_ATTRIBUTES { \
 \
   /* Endpoint: 0, Cluster: Descriptor (server) */ \
@@ -277,6 +277,7 @@
 \
   /* Endpoint: 1, Cluster: Electrical Measurement (server) */ \
   { ZAP_SIMPLE_DEFAULT(0x000000), 0x00000000, 4, ZAP_TYPE(BITMAP32), 0 }, /* measurement type */  \
+  { ZAP_SIMPLE_DEFAULT(0x000001), 0x00000306, 4, ZAP_TYPE(INT32U), 0 }, /* total apparent power */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000505, 2, ZAP_TYPE(INT16U), 0 }, /* rms voltage */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x00000508, 2, ZAP_TYPE(INT16U), 0 }, /* rms current */  \
   { ZAP_SIMPLE_DEFAULT(0xffff), 0x0000050F, 2, ZAP_TYPE(INT16U), 0 }, /* apparent power */  \
@@ -774,8 +775,8 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
       /* Endpoint: 1, Cluster: Electrical Measurement (server) */ \
       .clusterId = 0x00000B04, \
       .attributes = ZAP_ATTRIBUTE_INDEX(137), \
-      .attributeCount = 6, \
-      .clusterSize = 16, \
+      .attributeCount = 7, \
+      .clusterSize = 20, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
@@ -786,7 +787,7 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Enedis TIC (server) */ \
       .clusterId = 0xFFF1FCBD, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(143), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(144), \
       .attributeCount = 72, \
       .clusterSize = 504, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -805,7 +806,7 @@ const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {\
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES { \
   { ZAP_CLUSTER_INDEX(0), 18, 212 }, \
-  { ZAP_CLUSTER_INDEX(18), 6, 540 }, \
+  { ZAP_CLUSTER_INDEX(18), 6, 544 }, \
 }
 
 
@@ -820,7 +821,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (37)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (752)
+#define ATTRIBUTE_MAX_SIZE (756)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)

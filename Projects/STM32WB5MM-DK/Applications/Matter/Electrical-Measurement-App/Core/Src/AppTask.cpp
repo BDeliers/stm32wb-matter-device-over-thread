@@ -348,13 +348,18 @@ void AppTask::AppTaskMain(void *pvParameter)
                                     chip::app::Clusters::ElectricalMeasurement::Id,
                                     chip::app::Clusters::ElectricalMeasurement::Attributes::RmsVoltage::Id, 
                                     obj.GetDataPtr(), obj.GetSize());
-                    
-
-                    if (!AppClusterMgr::GetInstance().UpdateMatterCluster(chip::app::Clusters::EnedisTic::Id,
-                                                        map_linky_to_matter[f], obj.GetDataPtr(), obj.GetSize()))
+                    if (display_detected)
                     {
-                        ChipLogError(NotSpecified, "Error setting a Matter attribute");
+                        snprintf(str_disp_buffer, sizeof(str_disp_buffer), "Urms= %lu V", *static_cast<const uint16_t*>(obj.GetDataPtr()));
+                        UTIL_LCD_DisplayStringAt(0, LINE(4), (uint8_t*) str_disp_buffer, CENTER_MODE);
+                        BSP_LCD_Refresh(0);
                     }
+
+                    obj = AppLinky::GetInstance().GetField(AppLinky::Field::EAST);
+                    AppClusterMgr::GetInstance().UpdateMatterCluster(
+                                    chip::app::Clusters::ElectricalMeasurement::Id,
+                                    chip::app::Clusters::ElectricalMeasurement::Attributes::TotalApparentPower::Id, 
+                                    obj.GetDataPtr(), obj.GetSize());
                 }
 
                 // Restart acquisition when all the new values have been processed

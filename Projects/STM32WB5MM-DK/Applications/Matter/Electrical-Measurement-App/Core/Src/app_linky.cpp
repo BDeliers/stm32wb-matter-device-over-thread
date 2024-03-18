@@ -142,6 +142,8 @@ void AppLinky::Handler(void* arg)
             // Stop the RX driver
             AppUart_EnableRxExternal(false);
 
+            this_ptr->frame_received = false;
+
             ptr_line_start = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes);
 
             // If a frame starts properly as it should, put the pointer to the first line starter
@@ -156,21 +158,24 @@ void AppLinky::Handler(void* arg)
                     // Find the line end
                     ptr_line_end = ptr_line_start;
                     while ((*ptr_line_end != ASCII_CR)
-                            && (ptr_line_end != reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes)))
+                            && (ptr_line_end != reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes-2)))
                     {
                         ptr_line_end++;
                     };
 
-                    if (ptr_line_end == reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes))
+                    if (ptr_line_end >= reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes))
                     {
                         APP_DBG("[AppLinky] Malformed frame, aborting");
                         break;
                     }
 
                     // Process the line
-                    if (!this_ptr->ProcessLine(ptr_line_start, ptr_line_end))
+                    if (ptr_line_end - ptr_line_start > 3)
                     {
-                        APP_DBG("[AppLinky] Failed to process a line");
+                        if (!this_ptr->ProcessLine(ptr_line_start, ptr_line_end))
+                        {
+                            APP_DBG("[AppLinky] Failed to process a line");
+                        }
                     }
 
                     // Move to the next line

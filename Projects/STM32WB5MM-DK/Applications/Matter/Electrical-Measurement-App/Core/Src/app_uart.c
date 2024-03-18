@@ -119,7 +119,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         GPIO_InitStruct.Alternate = GPIO_AF8_LPUART1;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-        HAL_NVIC_SetPriority(LPUART1_IRQn, 0, 0);
+        HAL_NVIC_SetPriority(LPUART1_IRQn, 5, 0);
         HAL_NVIC_EnableIRQ(LPUART1_IRQn);
     }
     else if(huart->Instance==USART1)
@@ -148,7 +148,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         __HAL_RCC_DMAMUX1_CLK_ENABLE();
         __HAL_RCC_DMA2_CLK_ENABLE();
 
-        HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 0, 0);
+        HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 9, 0);
         HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
 
         hdma_usart1_tx.Instance = DMA2_Channel4;
@@ -167,7 +167,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
         __HAL_LINKDMA(huart,hdmatx,hdma_usart1_tx);
 
-        HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+        HAL_NVIC_SetPriority(USART1_IRQn, 10, 0);
         HAL_NVIC_EnableIRQ(USART1_IRQn);
     }
 }

@@ -96,9 +96,9 @@ public:
         bool SetData(void* data_ptr);
         bool Equals(void* src);
     protected:
-        uint8_t* payload_ptr        = nullptr;
-        uint8_t payload_size        = 0;
-        bool    payload_is_string   = false;
+        uint8_t* payload_ptr{nullptr};
+        uint8_t payload_size{0};
+        bool    payload_is_string{false};
     };
 
     template <uint8_t size, bool is_string=false>
@@ -112,7 +112,7 @@ public:
             payload_ptr = payload;
         }
     private:
-        uint8_t payload[size];
+        uint8_t payload[size]{0};
     };
 
     static AppLinky& GetInstance(void)

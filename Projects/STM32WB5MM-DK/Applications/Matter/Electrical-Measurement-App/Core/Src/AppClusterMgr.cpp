@@ -35,10 +35,11 @@ bool AppClusterMgr::UpdateMatterCluster(chip::ClusterId cluster, chip::Attribute
         {
             switch (attribute)
             {
-            case ApparentPower::Id: { ret = ApparentPower::Set(ep_id, static_cast<ApparentPower::TypeInfo::Type>(tmp)); break; }
-            case RmsCurrent::Id:    { ret = RmsCurrent::Set(ep_id, static_cast<RmsCurrent::TypeInfo::Type>(tmp));       break; }
-            case RmsVoltage::Id:    { ret = RmsVoltage::Set(ep_id, static_cast<RmsVoltage::TypeInfo::Type>(tmp));       break; }
-            default:                { break; }
+            case ApparentPower::Id:         { ret = ApparentPower::Set(ep_id, static_cast<ApparentPower::TypeInfo::Type>(tmp));             break; }
+            case RmsCurrent::Id:            { ret = RmsCurrent::Set(ep_id, static_cast<RmsCurrent::TypeInfo::Type>(tmp));                   break; }
+            case RmsVoltage::Id:            { ret = RmsVoltage::Set(ep_id, static_cast<RmsVoltage::TypeInfo::Type>(tmp));                   break; }
+            case TotalApparentPower::Id:    { ret = TotalApparentPower::Set(ep_id, static_cast<TotalApparentPower::TypeInfo::Type>(tmp));   break; }
+            default:                        { break; }
             }
         }
         else if (cluster == EnedisTic::Id)
