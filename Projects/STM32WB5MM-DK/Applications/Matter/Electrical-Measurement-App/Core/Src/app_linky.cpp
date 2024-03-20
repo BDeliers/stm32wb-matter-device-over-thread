@@ -123,6 +123,15 @@ bool AppLinky::Init(osMessageQId feedback_queue)
 
     AppUart_InitExternal(UartRxCallback);
 
+    timer_rx = xTimerCreate("Delay_LinkyRx",  // Just a text name, not used by the RTOS kernel
+            10000U,                                     // == default timer period (mS)
+            pdTRUE,                                    // Timer reload
+            0,                                          // init timer
+            DelayReceiveTimerHandler                    // timer callback handler
+            );
+
+    xTimerStart(timer_rx, 0);
+
     return true;
 }
 
@@ -130,8 +139,7 @@ void AppLinky::Handler(void* arg)
 {
     AppLinky* this_ptr = static_cast<AppLinky*>(arg);
 
-    char *ptr_line_start, *ptr_line_end;
-    uint16_t bytes_count;
+    char *ptr_line_start, *ptr_line_end, *ptr_frame_end;
 
     this_ptr->StartReceiving();
 
@@ -139,59 +147,56 @@ void AppLinky::Handler(void* arg)
     {
         if (this_ptr->frame_received)
         {
-            // Stop the RX driver
-            AppUart_EnableRxExternal(false);
-
             this_ptr->frame_received = false;
 
             ptr_line_start = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes);
+            ptr_frame_end  = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes + this_ptr->bytes_count);
 
-            // If a frame starts properly as it should, put the pointer to the first line starter
-            if (*ptr_line_start == ASCII_STX)
+            for (char* ptr = ptr_line_start; ptr < ptr_frame_end; ptr++)
             {
-                bytes_count = this_ptr->buffer_incoming_bytes - this_ptr->ptr_incoming_bytes;
-                ptr_line_start++;
-
-                // Iterate on each byte
-                for (;;)
-                {
-                    // Find the line end
-                    ptr_line_end = ptr_line_start;
-                    while ((*ptr_line_end != ASCII_CR)
-                            && (ptr_line_end != reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes-2)))
-                    {
-                        ptr_line_end++;
-                    };
-
-                    if (ptr_line_end >= reinterpret_cast<char*>(this_ptr->ptr_incoming_bytes))
-                    {
-                        APP_DBG("[AppLinky] Malformed frame, aborting");
-                        break;
-                    }
-
-                    // Process the line
-                    if (ptr_line_end - ptr_line_start > 3)
-                    {
-                        if (!this_ptr->ProcessLine(ptr_line_start, ptr_line_end))
-                        {
-                            APP_DBG("[AppLinky] Failed to process a line");
-                        }
-                    }
-
-                    // Move to the next line
-                    ptr_line_start = ptr_line_end+1;
-
-                    // End of frame
-                    if (*ptr_line_start == ASCII_ETX)
-                    {
-                        break;
-                    }
-                }
+                *ptr &= 0x7F;
             }
 
+            while ((*ptr_line_start != ASCII_STX) && (ptr_line_start < ptr_frame_end))
+            {
+                ptr_line_start++;
+            }
 
-            // Restart RX procedure
-            //this_ptr->StartReceiving();
+            // Iterate on each byte
+            for (;;)
+            {
+                // Find the line end
+                ptr_line_end = ptr_line_start;
+                while ((*ptr_line_end != ASCII_CR)
+                        && (ptr_line_end != (ptr_frame_end - 2)))
+                {
+                    ptr_line_end++;
+                }
+
+                if (ptr_line_end >= ptr_frame_end)
+                {
+                    APP_DBG("[AppLinky] Malformed frame, aborting");
+                    break;
+                }
+
+                // Process the line
+                if (ptr_line_end - ptr_line_start > 3)
+                {
+                    if (!this_ptr->ProcessLine(ptr_line_start, ptr_line_end))
+                    {
+                        APP_DBG("[AppLinky] Failed to process a line");
+                    }
+                }
+
+                // Move to the next line
+                ptr_line_start = ptr_line_end+1;
+
+                // End of frame
+                if (*ptr_line_start == ASCII_ETX)
+                {
+                    break;
+                }
+            }
         }
 
         // Don't block !
@@ -199,17 +204,18 @@ void AppLinky::Handler(void* arg)
     }
 }
 
+void AppLinky::DelayReceiveTimerHandler(TimerHandle_t xTimer) {
+    GetInstance().StartReceiving();
+}
+
 bool AppLinky::StartReceiving(void)
 {
     // Reset all the business logic
     memset(buffer_incoming_bytes, 0, sizeof(buffer_incoming_bytes));
-    ptr_incoming_bytes   = buffer_incoming_bytes;
-    ready_to_receive = true;
-    frame_started    = false;
     frame_received   = false;
 
     // Start the RX driver
-    AppUart_EnableRxExternal(true);
+    AppUart_ReceiveFrameExternal(buffer_incoming_bytes, sizeof(buffer_incoming_bytes));
 
     return true;
 }
@@ -219,32 +225,12 @@ AppLinky::DataObjectBase& AppLinky::GetField(Field field)
     return linky_data[field];
 }
 
-void AppLinky::UartRxCallback(uint8_t byte)
+void AppLinky::UartRxCallback(uint16_t size)
 {
     AppLinky& self = AppLinky::GetInstance();
 
-    // If we're safe to write in the buffer
-    if (self.ready_to_receive)
-    {
-        // Wait for start of frame
-        if (byte == ASCII_STX)
-        {
-            self.frame_started = true;
-        }
-        // If the frame has started
-        if (self.frame_started)
-        {
-            // End of frame, lock the buffer and process it
-            if (byte == ASCII_ETX)
-            {
-                self.ready_to_receive = false;
-                self.frame_received   = true;
-            }
-
-            // Store the byte in the buffer
-            *(self.ptr_incoming_bytes++) = byte;
-        }
-    }
+    self.frame_received = true;
+    self.bytes_count    = size;
 }
 
 bool AppLinky::CheckCrc(const char* data, char checksum, size_t size)

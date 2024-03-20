@@ -21,6 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32wbxx_it.h"
+#include "stm32wbxx_ll_lpuart.h"
 #include "app_common.h"
 #include "app_uart.h"
 
@@ -187,8 +188,17 @@ void DMA2_Channel4_IRQHandler( void )
 	HAL_DMA_IRQHandler(huart1.hdmatx);
 }
 
+void DMA2_Channel5_IRQHandler( void )
+{
+	HAL_DMA_IRQHandler(hlpuart1.hdmarx);
+}
+
 void LPUART1_IRQHandler(void)
 {
+  if (LL_LPUART_IsActiveFlag_IDLE(hlpuart1.Instance) > 0)
+  {
+    AppUart_NotifyIdleEventExternal();
+  }
 	HAL_UART_IRQHandler(&hlpuart1);
 }
 

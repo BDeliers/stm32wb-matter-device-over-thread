@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include "cmsis_os.h"
+#include "timers.h"
 
 /*
  * The Linky incoming bytes will be processed and parsed in this module
@@ -127,17 +128,17 @@ public:
 
     DataObjectBase& GetField(Field field);
 
-    static void UartRxCallback(uint8_t byte);
+    static void UartRxCallback(uint16_t byte);
 
 private:
-    uint8_t buffer_incoming_bytes[1256];
-    uint8_t* ptr_incoming_bytes;
-    bool frame_started;
-    bool frame_received;
-    bool ready_to_receive;
+    uint8_t buffer_incoming_bytes[2048];
+    volatile bool frame_received;
+    volatile uint16_t bytes_count;
     osMessageQId queue_data_update;
+    TimerHandle_t timer_rx;
 
     static void Handler(void* arg);
+    static void DelayReceiveTimerHandler(TimerHandle_t xTimer);
 
     bool CheckCrc(const char* data, char checksum, size_t size);
     bool ProcessLine(char* start, char* end);

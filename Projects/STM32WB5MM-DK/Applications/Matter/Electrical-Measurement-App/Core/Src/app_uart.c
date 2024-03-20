@@ -1,15 +1,19 @@
 #include "app_uart.h"
 
 #include "stm32wbxx_hal.h"
+#include "stm32wbxx_ll_lpuart.h"
 
-UART_HandleTypeDef hlpuart1          = {0};
-UART_HandleTypeDef huart1            = {0};
-DMA_HandleTypeDef  hdma_usart1_tx    = {0};
+UART_HandleTypeDef hlpuart1         = {0};
+UART_HandleTypeDef huart1           = {0};
+DMA_HandleTypeDef  hdma_usart1_tx   = {0};
+DMA_HandleTypeDef  hdma_lpuart1_rx  = {0};
 
-void (*clbk_dma_uart1)(void) = NULL;
-void (*clbk_rx_lpuart1)(uint8_t) = NULL;
+void (*clbk_dma_uart1)(void)        = NULL;
+void (*clbk_rx_lpuart1)(uint16_t)   = NULL;
 
-static uint8_t buff_lpuart_rx;
+static uint8_t* buff_lpuart_rx;
+static uint16_t buff_lpuart_rx_size;
+static volatile bool rx_requested   = false;
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
@@ -47,14 +51,14 @@ bool AppUart_TransmitDebug(uint8_t* data, size_t size)
     return (HAL_UART_Transmit_IT(&huart1, data, size) == HAL_OK);
 }
 
-bool AppUart_InitExternal(void (*rx_callback)(uint8_t))
+bool AppUart_InitExternal(void (*rx_callback)(uint16_t))
 {
     hlpuart1.Instance = LPUART1;
     hlpuart1.Init.BaudRate = 9600;
     hlpuart1.Init.WordLength = UART_WORDLENGTH_8B;
     hlpuart1.Init.StopBits = UART_STOPBITS_1;
     hlpuart1.Init.Parity = UART_PARITY_EVEN;
-    hlpuart1.Init.Mode = UART_MODE_TX_RX;
+    hlpuart1.Init.Mode = UART_MODE_RX;
     hlpuart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
     hlpuart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
     hlpuart1.Init.ClockPrescaler = UART_PRESCALER_DIV4;
@@ -70,17 +74,29 @@ bool AppUart_InitExternal(void (*rx_callback)(uint8_t))
     return true;
 }
 
-bool AppUart_EnableRxExternal(bool enable)
+void AppUart_NotifyIdleEventExternal(void)
 {
-    if (enable)
+    if (rx_requested)
     {
-        // Clean the overrun flag. It will happen for sure as the UART is always receiving
+        rx_requested = false;
+
         __HAL_UART_CLEAR_FLAG(&hlpuart1, UART_CLEAR_OREF);
-        return (HAL_UART_Receive_IT(&hlpuart1, &buff_lpuart_rx, 1) == HAL_OK);
+        // All bytes until an IDLE event or a buffer overflow will be received
+        HAL_UARTEx_ReceiveToIdle_DMA(&hlpuart1, buff_lpuart_rx, buff_lpuart_rx_size);
     }
-    else
+}
+
+bool AppUart_ReceiveFrameExternal(uint8_t* buff, uint16_t buff_size)
+{
+    if (!rx_requested)
     {
-        return (HAL_UART_AbortReceive_IT(&hlpuart1) == HAL_OK);
+        // Next time the UART line will be idle, a Rx will be triggered
+        buff_lpuart_rx      = buff;
+        buff_lpuart_rx_size = buff_size;
+        rx_requested        = true;
+
+        // Enable IDLE interrupt
+        LL_LPUART_EnableIT_IDLE(hlpuart1.Instance);
     }
 }
 
@@ -119,7 +135,29 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         GPIO_InitStruct.Alternate = GPIO_AF8_LPUART1;
         HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-        HAL_NVIC_SetPriority(LPUART1_IRQn, 5, 0);
+        __HAL_RCC_DMAMUX1_CLK_ENABLE();
+        __HAL_RCC_DMA2_CLK_ENABLE();
+
+        HAL_NVIC_SetPriority(DMA2_Channel5_IRQn, 5, 0);
+        HAL_NVIC_EnableIRQ(DMA2_Channel5_IRQn);
+
+        hdma_lpuart1_rx.Instance = DMA2_Channel5;
+        hdma_lpuart1_rx.Init.Request = DMA_REQUEST_LPUART1_RX;
+        hdma_lpuart1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+        hdma_lpuart1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+        hdma_lpuart1_rx.Init.MemInc = DMA_MINC_ENABLE;
+        hdma_lpuart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+        hdma_lpuart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+        hdma_lpuart1_rx.Init.Mode = DMA_NORMAL;
+        hdma_lpuart1_rx.Init.Priority = DMA_PRIORITY_HIGH;
+        if (HAL_DMA_Init(&hdma_lpuart1_rx) != HAL_OK)
+        {
+            Error_Handler();
+        }
+
+        __HAL_LINKDMA(huart, hdmarx, hdma_lpuart1_rx);
+
+        HAL_NVIC_SetPriority(LPUART1_IRQn, 6, 0);
         HAL_NVIC_EnableIRQ(LPUART1_IRQn);
     }
     else if(huart->Instance==USART1)
@@ -165,20 +203,18 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(huart,hdmatx,hdma_usart1_tx);
+        __HAL_LINKDMA(huart, hdmatx, hdma_usart1_tx);
 
         HAL_NVIC_SetPriority(USART1_IRQn, 10, 0);
         HAL_NVIC_EnableIRQ(USART1_IRQn);
     }
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
 {
-    if ((huart == &hlpuart1) && (clbk_rx_lpuart1 != NULL))
+    if ((huart == &hlpuart1) && (huart->RxEventType == HAL_UART_RXEVENT_TC || huart->RxEventType == HAL_UART_RXEVENT_IDLE) && (clbk_rx_lpuart1 != NULL))
     {
-    	clbk_rx_lpuart1(buff_lpuart_rx);
-    	// Restart RX
-        HAL_UART_Receive_IT(&hlpuart1, &buff_lpuart_rx, 1);
+    	clbk_rx_lpuart1(size);
     }
 }
 

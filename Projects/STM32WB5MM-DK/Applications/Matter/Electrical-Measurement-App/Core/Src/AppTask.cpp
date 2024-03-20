@@ -70,7 +70,6 @@ static QueueHandle_t    sAppEventQueue;
 static osMessageQId     sClusterUpdateQueue;
 TimerHandle_t           sPushButtonTimeoutTimer;
 TimerHandle_t           sDelayNvmTimer;
-TimerHandle_t           sDelayReceiveTimer;
 const osThreadAttr_t AppTask_attr = { 
                                     .name       = APPTASK_NAME,
                                     .attr_bits  = APP_ATTR_BITS,
@@ -108,7 +107,7 @@ static const chip::AttributeId map_linky_to_matter[AppLinky::Field::Field_COUNT]
     EnedisTic::Attributes::Ccasn::Id, EnedisTic::Attributes::CcasnM1::Id, EnedisTic::Attributes::Ccain::Id, EnedisTic::Attributes::CcainM1::Id, 
     EnedisTic::Attributes::Umoy1::Id, EnedisTic::Attributes::Umoy2::Id, EnedisTic::Attributes::Umoy3::Id, EnedisTic::Attributes::Stge::Id, 
     EnedisTic::Attributes::Dpm1::Id, EnedisTic::Attributes::Fpm1::Id, EnedisTic::Attributes::Dpm2::Id, EnedisTic::Attributes::Fpm2::Id, 
-    EnedisTic::Attributes::Dpm3::Id, EnedisTic::Attributes::Fpm3::Id, EnedisTic::Attributes::Msg1::Id, EnedisTic::Attributes::Msg2::Id, 
+    EnedisTic::Attributes::Dpm3::Id, EnedisTic::Attributes::Fpm3::Id, kInvalidAttributeId, kInvalidAttributeId, 
     EnedisTic::Attributes::Prm::Id, EnedisTic::Attributes::Relais::Id, EnedisTic::Attributes::Ntarf::Id, EnedisTic::Attributes::Njourf::Id, 
     EnedisTic::Attributes::NjourfP1::Id, EnedisTic::Attributes::PjourfP1::Id, EnedisTic::Attributes::Ppointe::Id,
 };
@@ -170,13 +169,6 @@ CHIP_ERROR AppTask::Init() {
             pdFALSE,               //  timer reload
             0,       // init timer
             DelayNvmHandler // timer callback handler
-            );
-
-    sDelayReceiveTimer = xTimerCreate("Delay_LinkyRx",  // Just a text name, not used by the RTOS kernel
-            15000U,                                     // == default timer period (mS)
-            pdFALSE,                                    //  Timer reload
-            0,                                          // init timer
-            DelayReceiveTimerHandler                    // timer callback handler
             );
 
     chip::DeviceLayer::ThreadStackMgr().InitThreadStack();
@@ -307,7 +299,7 @@ void AppTask::AppTaskMain(void *pvParameter)
                     if (!AppClusterMgr::GetInstance().UpdateMatterCluster(chip::app::Clusters::EnedisTic::Id,
                                                         map_linky_to_matter[f], obj.GetDataPtr(), obj.GetSize()))
                     {
-                        ChipLogError(NotSpecified, "Error setting a Matter attribute");
+                        ChipLogError(NotSpecified, "Error setting Matter attribute %u", f);
                     }
                 }
             
@@ -360,13 +352,6 @@ void AppTask::AppTaskMain(void *pvParameter)
                                     chip::app::Clusters::ElectricalMeasurement::Id,
                                     chip::app::Clusters::ElectricalMeasurement::Attributes::TotalApparentPower::Id, 
                                     obj.GetDataPtr(), obj.GetSize());
-                }
-
-                // Restart acquisition when all the new values have been processed
-                if (osMessageQueueGetCount(sClusterUpdateQueue) == 0)
-                {
-                    // Delay by 15 seconds
-                    xTimerStart(sDelayReceiveTimer, 0);
                 }
             }
         }
@@ -454,10 +439,6 @@ void AppTask::DelayNvmHandler(TimerHandle_t xTimer) {
     event.Handler = UpdateNvmEventHandler;
     sAppTask.mFunction = kFunction_SaveNvm;
     sAppTask.PostEvent(&event);
-}
-
-void AppTask::DelayReceiveTimerHandler(TimerHandle_t xTimer) {
-    AppLinky::GetInstance().StartReceiving();
 }
 
 void AppTask::UpdateLCD(void)
