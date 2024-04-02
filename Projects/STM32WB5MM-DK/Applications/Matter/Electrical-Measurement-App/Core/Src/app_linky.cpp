@@ -149,18 +149,25 @@ void AppLinky::Handler(void* arg)
         {
             this_ptr->frame_received = false;
 
-            ptr_line_start = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes);
-            ptr_frame_end  = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes + this_ptr->bytes_count);
-
-            for (char* ptr = ptr_line_start; ptr < ptr_frame_end; ptr++)
+            for (char* ptr = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes); ptr < reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes + sizeof(this_ptr->buffer_incoming_bytes)); ptr++)
             {
                 *ptr &= 0x7F;
             }
 
-            while ((*ptr_line_start != ASCII_STX) && (ptr_line_start < ptr_frame_end))
+            ptr_line_start = reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes);
+
+            while ((*ptr_line_start != ASCII_STX) && (ptr_line_start < reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes + sizeof(this_ptr->buffer_incoming_bytes))))
             {
                 ptr_line_start++;
             }
+
+            ptr_frame_end  = ptr_line_start;
+            while ((*ptr_frame_end != ASCII_ETX) && (ptr_frame_end < reinterpret_cast<char*>(this_ptr->buffer_incoming_bytes + sizeof(this_ptr->buffer_incoming_bytes))))
+            {
+                ptr_frame_end++;
+            }
+
+            ptr_line_start++;
 
             // Iterate on each byte
             for (;;)
@@ -225,12 +232,11 @@ AppLinky::DataObjectBase& AppLinky::GetField(Field field)
     return linky_data[field];
 }
 
-void AppLinky::UartRxCallback(uint16_t size)
+void AppLinky::UartRxCallback(void)
 {
     AppLinky& self = AppLinky::GetInstance();
 
     self.frame_received = true;
-    self.bytes_count    = size;
 }
 
 bool AppLinky::CheckCrc(const char* data, char checksum, size_t size)

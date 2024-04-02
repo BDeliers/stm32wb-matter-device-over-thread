@@ -9,7 +9,7 @@ DMA_HandleTypeDef  hdma_usart1_tx   = {0};
 DMA_HandleTypeDef  hdma_lpuart1_rx  = {0};
 
 void (*clbk_dma_uart1)(void)        = NULL;
-void (*clbk_rx_lpuart1)(uint16_t)   = NULL;
+void (*clbk_rx_lpuart1)(void)   = NULL;
 
 static uint8_t* buff_lpuart_rx;
 static uint16_t buff_lpuart_rx_size;
@@ -51,7 +51,7 @@ bool AppUart_TransmitDebug(uint8_t* data, size_t size)
     return (HAL_UART_Transmit_IT(&huart1, data, size) == HAL_OK);
 }
 
-bool AppUart_InitExternal(void (*rx_callback)(uint16_t))
+bool AppUart_InitExternal(void (*rx_callback)(void))
 {
     hlpuart1.Instance = LPUART1;
     hlpuart1.Init.BaudRate = 9600;
@@ -82,7 +82,7 @@ void AppUart_NotifyIdleEventExternal(void)
 
         __HAL_UART_CLEAR_FLAG(&hlpuart1, UART_CLEAR_OREF);
         // All bytes until an IDLE event or a buffer overflow will be received
-        HAL_UARTEx_ReceiveToIdle_DMA(&hlpuart1, buff_lpuart_rx, buff_lpuart_rx_size);
+        HAL_UART_Receive_DMA(&hlpuart1, buff_lpuart_rx, buff_lpuart_rx_size);
     }
 }
 
@@ -96,7 +96,8 @@ bool AppUart_ReceiveFrameExternal(uint8_t* buff, uint16_t buff_size)
         rx_requested        = true;
 
         // Enable IDLE interrupt
-        LL_LPUART_EnableIT_IDLE(hlpuart1.Instance);
+        //LL_LPUART_EnableIT_IDLE(hlpuart1.Instance);
+        AppUart_NotifyIdleEventExternal();
     }
 }
 
@@ -210,11 +211,11 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     }
 }
 
-void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t size)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if ((huart == &hlpuart1) && (huart->RxEventType == HAL_UART_RXEVENT_TC || huart->RxEventType == HAL_UART_RXEVENT_IDLE) && (clbk_rx_lpuart1 != NULL))
+    if ((huart == &hlpuart1) && (clbk_rx_lpuart1 != NULL))
     {
-    	clbk_rx_lpuart1(size);
+    	clbk_rx_lpuart1();
     }
 }
 

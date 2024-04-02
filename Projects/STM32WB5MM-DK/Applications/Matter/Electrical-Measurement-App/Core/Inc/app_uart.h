@@ -15,7 +15,7 @@ bool AppUart_TransmitDmaDebug(uint8_t* data, size_t size, void (*callback)(void)
 bool AppUart_TransmitDebug(uint8_t* data, size_t size);
 
 // External UART related functions
-bool AppUart_InitExternal(void (*rx_callback)(uint16_t));
+bool AppUart_InitExternal(void (*rx_callback)(void));
 bool AppUart_ReceiveFrameExternal(uint8_t* buff, uint16_t buff_size);
 void AppUart_NotifyIdleEventExternal(void);
 

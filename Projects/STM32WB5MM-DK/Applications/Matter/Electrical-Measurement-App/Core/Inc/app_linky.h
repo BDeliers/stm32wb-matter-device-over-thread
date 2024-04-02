@@ -128,10 +128,10 @@ public:
 
     DataObjectBase& GetField(Field field);
 
-    static void UartRxCallback(uint16_t byte);
+    static void UartRxCallback(void);
 
 private:
-    uint8_t buffer_incoming_bytes[2048];
+    uint8_t buffer_incoming_bytes[4096];
     volatile bool frame_received;
     volatile uint16_t bytes_count;
     osMessageQId queue_data_update;

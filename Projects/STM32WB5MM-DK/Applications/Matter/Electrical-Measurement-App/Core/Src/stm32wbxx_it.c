@@ -195,10 +195,10 @@ void DMA2_Channel5_IRQHandler( void )
 
 void LPUART1_IRQHandler(void)
 {
-  if (LL_LPUART_IsActiveFlag_IDLE(hlpuart1.Instance) > 0)
+  /*if (LL_LPUART_IsActiveFlag_IDLE(hlpuart1.Instance) > 0)
   {
     AppUart_NotifyIdleEventExternal();
-  }
+  }*/
 	HAL_UART_IRQHandler(&hlpuart1);
 }
 
